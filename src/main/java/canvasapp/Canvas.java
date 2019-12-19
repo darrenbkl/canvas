@@ -28,10 +28,27 @@ public class Canvas {
         }
     }
 
-    public Canvas(Node[][] nodes, int w, int h) {
+    private Canvas(Node[][] nodes, int w, int h) {
         this.nodes = nodes;
         this.w = w;
         this.h = h;
+    }
+
+    public boolean isWithinCanvas(int x, int y) {
+        if (x < 0 || x >= w || y < 0 || y >= h) return false;
+        else return true;
+    }
+
+    public boolean isBorder(int x, int y) {
+
+        checkCanvasBoundary(x, y);
+        return nodes[x][y].getStatus() == Node.Status.BORDER;
+    }
+
+    public boolean isPaint(int x, int y, char color) {
+        checkCanvasBoundary(x, y);
+        Node n = nodes[x][y];
+        return n.getStatus().equals(Node.Status.PAINT) && n.getColor() == color;
     }
 
     public Canvas draw(List<Point> points, char color) {
@@ -46,6 +63,20 @@ public class Canvas {
 
             newNodes[x][y] = new Node(x, y, Node.Status.BORDER, color);
         }
+
+        return new Canvas(newNodes, w, h);
+    }
+
+    public Canvas draw(Point point, char color) {
+
+        int x = point.getX();
+        int y = point.getY();
+
+        checkCanvasBoundary(x, y);
+
+        Node[][] newNodes = copy(nodes, w, h);
+
+        newNodes[x][y] = new Node(x, y, Node.Status.BORDER, color);
 
         return new Canvas(newNodes, w, h);
     }
@@ -66,6 +97,20 @@ public class Canvas {
         return new Canvas(newNodes, w, h);
     }
 
+    public Canvas paint(Point point, char color) {
+
+        int x = point.getX();
+        int y = point.getY();
+
+        checkCanvasBoundary(x, y);
+
+        Node[][] newNodes = copy(nodes, w, h);
+
+        newNodes[x][y] = new Node(x, y, Node.Status.PAINT, color);
+
+        return new Canvas(newNodes, w, h);
+    }
+
     private Node[][] copy(Node[][] oriNodes, int w, int h) {
 
         Node[][] newNodes = new Node[w][h];
@@ -79,29 +124,9 @@ public class Canvas {
         return newNodes;
     }
 
-    private void printNodes(Node[][] n) {
-        for (Node[] x : n) {
-            for (Node y : x) {
-                System.out.println(y);
-            }
-        }
-    }
-
     private void checkCanvasBoundary(int x, int y) {
         if (x < 0 || x >= w || y < 0 || y >= h)
             throw new InvalidCoordinates("Coordinates must be within canvas dimension");
-    }
-
-    public boolean isBorder(int x, int y) {
-
-        checkCanvasBoundary(x, y);
-        return nodes[x][y].getStatus() == Node.Status.BORDER;
-    }
-
-    public boolean isPaint(int x, int y) {
-
-        checkCanvasBoundary(x, y);
-        return nodes[x][y].getStatus() == Node.Status.PAINT;
     }
 
     @Override
@@ -131,13 +156,7 @@ public class Canvas {
         return sb.toString();
     }
 
-    public boolean isPaintedWithColor(int x, int y, char color) {
-        checkCanvasBoundary(x, y);
-        Node n = nodes[x][y];
-        return n.getStatus().equals(Node.Status.PAINT) && n.getColor() == color;
-    }
-
-    @Builder(toBuilder = true)
+    @Builder
     @Value
     @With
     private static class Node {

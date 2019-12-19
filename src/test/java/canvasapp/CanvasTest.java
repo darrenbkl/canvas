@@ -39,6 +39,22 @@ public class CanvasTest extends AbstractBaseTest {
     }
 
     @Test
+    public void givenValidCoordinate_whenCheckIsWithinCanvas_shouldReturnTrue() {
+        Canvas canvas = new Canvas(10, 5);
+        boolean actual = canvas.isWithinCanvas(1, 1);
+
+        assertThat(actual, is(true));
+    }
+
+    @Test
+    public void givenInvalidCoordinate_whenCheckIsWithinCanvas_shouldReturnTrue() {
+        Canvas canvas = new Canvas(10, 5);
+        boolean actual = canvas.isWithinCanvas(11, 1);
+
+        assertThat(actual, is(false));
+    }
+
+    @Test
     public void givenCanvas_whenPrint_shouldReturnStringRepresentation() {
 
         Canvas canvas = new Canvas(3, 3);
@@ -54,6 +70,31 @@ public class CanvasTest extends AbstractBaseTest {
         String actual = canvas.toString();
 
         assertThat(actual, is(sb.toString()));
+    }
+
+    @Test
+    public void givenValidPoint_whenDraw_shouldReturnUpdatedCanvas() {
+
+        Canvas canvas = new Canvas(5, 5);
+
+        Point point = new Point(2, 2);
+
+        Canvas updatedCanvas = canvas.draw(point, 'x');
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("-------");sb.append(System.getProperty("line.separator"));
+        sb.append("|     |");sb.append(System.getProperty("line.separator"));
+        sb.append("|     |");sb.append(System.getProperty("line.separator"));
+        sb.append("|  x  |");sb.append(System.getProperty("line.separator"));
+        sb.append("|     |");sb.append(System.getProperty("line.separator"));
+        sb.append("|     |");sb.append(System.getProperty("line.separator"));
+        sb.append("-------");sb.append(System.getProperty("line.separator"));
+        String expected = sb.toString();
+
+        String actual = updatedCanvas.toString();
+
+        assertThat(actual, is(expected));
+        assertThat(updatedCanvas.isBorder(2, 2), is(true));
     }
 
     @Test
@@ -105,6 +146,32 @@ public class CanvasTest extends AbstractBaseTest {
     }
 
     @Test
+    public void givenValidPoint_whenPaint_shouldReturnUpdatedCanvas() {
+
+        Canvas canvas = new Canvas(5, 5);
+
+        Point point = new Point(2, 2);
+
+        Canvas updatedCanvas = canvas.paint(point, 'o');
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("-------");sb.append(System.getProperty("line.separator"));
+        sb.append("|     |");sb.append(System.getProperty("line.separator"));
+        sb.append("|     |");sb.append(System.getProperty("line.separator"));
+        sb.append("|  o  |");sb.append(System.getProperty("line.separator"));
+        sb.append("|     |");sb.append(System.getProperty("line.separator"));
+        sb.append("|     |");sb.append(System.getProperty("line.separator"));
+        sb.append("-------");sb.append(System.getProperty("line.separator"));
+        String expected = sb.toString();
+
+        String actual = updatedCanvas.toString();
+
+        assertThat(actual, is(expected));
+        assertThat(updatedCanvas.isPaint(2, 2, 'o'), is(true));
+
+    }
+
+    @Test
     public void givenValidPoints_whenPaint_shouldReturnUpdatedCanvas() {
 
         Canvas canvas = new Canvas(5, 5);
@@ -133,11 +200,11 @@ public class CanvasTest extends AbstractBaseTest {
         assertThat(actual, is(expected));
         assertThat(canvas, not(updatedCanvas));
 
-        assertThat(updatedCanvas.isPaint(2, 0), is(true));
-        assertThat(updatedCanvas.isPaint(2, 1), is(true));
-        assertThat(updatedCanvas.isPaint(2, 2), is(true));
-        assertThat(updatedCanvas.isPaint(2, 3), is(true));
-        assertThat(updatedCanvas.isPaint(2, 4), is(true));
+        assertThat(updatedCanvas.isPaint(2, 0, 'o'), is(true));
+        assertThat(updatedCanvas.isPaint(2, 1, 'o'), is(true));
+        assertThat(updatedCanvas.isPaint(2, 2, 'o'), is(true));
+        assertThat(updatedCanvas.isPaint(2, 3, 'o'), is(true));
+        assertThat(updatedCanvas.isPaint(2, 4, 'o'), is(true));
     }
 
     @Test
