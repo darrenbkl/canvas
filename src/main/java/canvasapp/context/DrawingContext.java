@@ -11,4 +11,9 @@ public class DrawingContext implements Context {
     public void execute(Command command) {
 
     }
+
+    @Override
+    public void print() {
+
+    }
 }
