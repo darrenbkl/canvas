@@ -2,7 +2,7 @@ package canvasapp.command;
 
 import canvasapp.AbstractBaseTest;
 import canvasapp.Canvas;
-import canvasapp.InvalidCoordinates;
+import canvasapp.exception.InvalidCoordinates;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;

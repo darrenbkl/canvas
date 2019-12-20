@@ -2,7 +2,7 @@ package canvasapp.command;
 
 import canvasapp.AbstractBaseTest;
 import canvasapp.Canvas;
-import canvasapp.InvalidCoordinates;
+import canvasapp.exception.InvalidCoordinates;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -37,6 +37,7 @@ public class DrawLineCommandTest extends AbstractBaseTest {
         Command command = new DrawLineCommand(2, 0, 2, 4);
 
         Canvas newCanvas = command.execute(currentCanvas);
+        String actual = newCanvas.toString();
 
         StringBuilder sb = new StringBuilder();
         sb.append("-------");sb.append(System.getProperty("line.separator"));
@@ -48,8 +49,6 @@ public class DrawLineCommandTest extends AbstractBaseTest {
         sb.append("-------");sb.append(System.getProperty("line.separator"));
         String expected = sb.toString();
 
-        String actual = newCanvas.toString();
-
-        assertThat(actual, is(actual));
+        assertThat(actual, is(expected));
     }
 }

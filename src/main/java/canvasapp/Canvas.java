@@ -1,5 +1,7 @@
 package canvasapp;
 
+import canvasapp.drawable.Drawable;
+import canvasapp.exception.InvalidCoordinates;
 import lombok.Builder;
 import lombok.Value;
 import lombok.With;
@@ -50,6 +52,24 @@ public class Canvas {
         Node n = nodes[x][y];
         return n.getStatus().equals(Node.Status.PAINT) && n.getColor() == color;
     }
+
+    public Canvas draw(Drawable drawable, char color) {
+
+        List<Point> points = drawable.getPoints();
+
+        Node[][] newNodes = copy(nodes, w, h);
+
+        for(Point p : points) {
+            int x = p.getX();
+            int y = p.getY();
+            checkCanvasBoundary(x, y);
+
+            newNodes[x][y] = new Node(x, y, Node.Status.BORDER, color);
+        }
+
+        return new Canvas(newNodes, w, h);
+    }
+
 
     public Canvas draw(List<Point> points, char color) {
 

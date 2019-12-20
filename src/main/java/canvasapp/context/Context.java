@@ -4,7 +4,7 @@ import canvasapp.command.Command;
 
 public interface Context {
 
-    void execute(Command command);
+    String execute(Command command);
 
-    void print();
+    boolean isInitialized();
 }

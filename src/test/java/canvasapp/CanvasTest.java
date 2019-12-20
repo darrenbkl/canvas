@@ -1,5 +1,6 @@
 package canvasapp;
 
+import canvasapp.exception.InvalidCoordinates;
 import org.junit.Test;
 
 import java.util.ArrayList;

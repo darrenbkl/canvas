@@ -1,19 +1,31 @@
 package canvasapp.context;
 
+import canvasapp.Canvas;
 import canvasapp.command.Command;
 
 /**
- * Main entry point to the commands
+ * Manages commands and the state of canvas
  */
 public class DrawingContext implements Context {
 
-    @Override
-    public void execute(Command command) {
+    private Canvas canvas;
 
+    public DrawingContext() {
+        this.canvas = null;
+    }
+
+    public DrawingContext(Canvas canvas) {
+        this.canvas = canvas;
     }
 
     @Override
-    public void print() {
+    public String execute(Command command) {
+        canvas = command.execute(canvas);
+        return canvas.toString();
+    }
 
+    @Override
+    public boolean isInitialized() {
+        return this.canvas != null;
     }
 }

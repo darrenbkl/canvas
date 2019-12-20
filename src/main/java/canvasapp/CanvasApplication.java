@@ -1,18 +1,16 @@
 package canvasapp;
 
 import canvasapp.context.DrawingContext;
+import canvasapp.handler.Handler;
 
 import java.util.Scanner;
 
 public class CanvasApplication {
 
-    private static final char LINE_COLOR = 'x';
-
     public static void main(String[] args) {
 
         Scanner in = new Scanner(System.in);
-
-        CanvasHandler canvasHandler = new CanvasHandler(new DrawingContext());
+        Handler canvasHandler = new Handler(new DrawingContext());
 
         while (true) {
 
@@ -21,23 +19,30 @@ public class CanvasApplication {
             String[] input = in.nextLine().trim().split("\\s+");
             String command = input[0];
 
-            switch (command) {
+            try {
+                switch (command) {
 
-                case "C":
-                    canvasHandler.create(input);
-                    break;
-                case "L":
-                case "R":
-                    canvasHandler.draw(input);
-                    break;
-                case "B":
-                    canvasHandler.paint(input);
-                    break;
-                case "Q":
-                    System.out.println("Bye");
-                    return;
-                default:
-                    System.out.println("Wrong command");
+                    case "C":
+                        String output = canvasHandler.create(input);
+                        System.out.println(output);
+                        break;
+                    case "L":
+                    case "R":
+                        output = canvasHandler.draw(input);
+                        System.out.println(output);
+                        break;
+                    case "B":
+                        output = canvasHandler.paint(input);
+                        System.out.println(output);
+                        break;
+                    case "Q":
+                        System.out.println("Bye");
+                        return;
+                    default:
+                        System.out.println("Wrong command");
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
         }
     }

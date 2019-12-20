@@ -1,7 +1,7 @@
 package canvasapp.command;
 
 import canvasapp.Canvas;
-import canvasapp.InvalidCoordinates;
+import canvasapp.exception.InvalidCoordinates;
 import canvasapp.Point;
 
 import java.util.ArrayList;
@@ -29,6 +29,8 @@ public class DrawRectangleCommand implements Command {
 
     @Override
     public Canvas execute(Canvas canvas) {
+
+        if (canvas == null) throw new IllegalStateException("Canvas must be created");
 
         List<Point> points = new ArrayList<>();
 

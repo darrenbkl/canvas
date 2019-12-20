@@ -16,6 +16,8 @@ public class PaintCommand implements Command {
 
     @Override
     public Canvas execute(Canvas canvas) {
+        if (canvas == null) throw new IllegalStateException("Canvas must be created");
+
         return doFillUsingStack(canvas, x, y, color);
     }
 
