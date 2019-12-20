@@ -1,4 +1,4 @@
-package canvasapp.command;
+package canvasapp.drawable;
 
 import canvasapp.Canvas;
 import canvasapp.Point;
@@ -7,16 +7,15 @@ import canvasapp.exception.InvalidCoordinates;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DrawLineCommand implements Command {
+public class LineDrawable implements Drawable {
 
     private final int x1;
     private final int y1;
     private final int x2;
     private final int y2;
 
-    public DrawLineCommand(int x1, int y1, int x2, int y2) {
+    public LineDrawable(int x1, int y1, int x2, int y2) {
 
-        // TODO make it more readable
         if ((x1 == x2) == (y1 == y2)) {
             throw new InvalidCoordinates("Coordinates must form a straight line");
         }
@@ -28,15 +27,12 @@ public class DrawLineCommand implements Command {
     }
 
     @Override
-    public Canvas execute(Canvas canvas) {
-
-//        Objects.requireNonNull(canvas);
-        if (canvas == null) throw new IllegalStateException("Canvas must be created");
-
+    public Canvas draw(Canvas canvas) {
         List<Point> points = new ArrayList<>();
 
         for (int x = x1; x <= x2; x++) {
             for (int y = y1; y <= y2; y++) {
+                if(!canvas.isWithinCanvas(x, y)) throw new InvalidCoordinates("Asdf");
                 points.add(new Point(x, y));
             }
         }

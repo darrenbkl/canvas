@@ -1,20 +1,21 @@
-package canvasapp.command;
+package canvasapp.drawable;
 
 import canvasapp.Canvas;
-import canvasapp.exception.InvalidCoordinates;
 import canvasapp.Point;
+import canvasapp.exception.InvalidCoordinates;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DrawRectangleCommand implements Command {
+public class RectDrawable implements Drawable {
+
     private final int x1;
     private final int y1;
     private final int x2;
     private final int y2;
     private final char color;
 
-    public DrawRectangleCommand(int x1, int y1, int x2, int y2, char color) {
+    public RectDrawable(int x1, int y1, int x2, int y2, char color) {
 
         if (x1 == x2 || y1 == y2) {
             throw new InvalidCoordinates("Coordinates must form a rectangle");
@@ -28,9 +29,7 @@ public class DrawRectangleCommand implements Command {
     }
 
     @Override
-    public Canvas execute(Canvas canvas) {
-
-        if (canvas == null) throw new IllegalStateException("Canvas must be created");
+    public Canvas draw(Canvas canvas) {
 
         List<Point> points = new ArrayList<>();
 

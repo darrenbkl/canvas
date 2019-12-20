@@ -1,9 +1,7 @@
 package canvasapp.drawable;
 
-import canvasapp.Point;
-
-import java.util.List;
+import canvasapp.Canvas;
 
 public interface Drawable {
-    List<Point> getPoints();
+    Canvas draw(Canvas canvas);
 }

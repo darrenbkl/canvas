@@ -1,17 +1,15 @@
 package canvasapp;
 
-import canvasapp.drawable.Drawable;
 import canvasapp.exception.InvalidCoordinates;
-import lombok.Builder;
 import lombok.Value;
-import lombok.With;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Value
 public class Canvas {
 
-    private Node[][] nodes;
+    private char[][] nodes;
     private int w;
     private int h;
 
@@ -21,16 +19,14 @@ public class Canvas {
 
         this.w = w;
         this.h = h;
-        this.nodes = new Node[w][h];
+        this.nodes = new char[w][h];
 
-        for (int x = 0; x < w; x++) {
-            for (int y = 0; y < h; y++) {
-                nodes[x][y] = new Node(x, y, Node.Status.EMPTY, ' ');
-            }
+        for (char[] row: nodes) {
+            Arrays.fill(row, ' ');
         }
     }
 
-    private Canvas(Node[][] nodes, int w, int h) {
+    private Canvas(char[][] nodes, int w, int h) {
         this.nodes = nodes;
         this.w = w;
         this.h = h;
@@ -41,39 +37,19 @@ public class Canvas {
         else return true;
     }
 
-    public boolean isBorder(int x, int y) {
-
+    public char getColor(int x, int y) {
         checkCanvasBoundary(x, y);
-        return nodes[x][y].getStatus() == Node.Status.BORDER;
+        return nodes[x][y];
     }
 
-    public boolean isPaint(int x, int y, char color) {
+    public boolean isColor(int x, int y, char color) {
         checkCanvasBoundary(x, y);
-        Node n = nodes[x][y];
-        return n.getStatus().equals(Node.Status.PAINT) && n.getColor() == color;
+        return nodes[x][y] == color;
     }
-
-    public Canvas draw(Drawable drawable, char color) {
-
-        List<Point> points = drawable.getPoints();
-
-        Node[][] newNodes = copy(nodes, w, h);
-
-        for(Point p : points) {
-            int x = p.getX();
-            int y = p.getY();
-            checkCanvasBoundary(x, y);
-
-            newNodes[x][y] = new Node(x, y, Node.Status.BORDER, color);
-        }
-
-        return new Canvas(newNodes, w, h);
-    }
-
 
     public Canvas draw(List<Point> points, char color) {
 
-        Node[][] newNodes = copy(nodes, w, h);
+        char[][] newNodes = copy(nodes);
 
         for (Point p : points) {
             int x = p.getX();
@@ -81,7 +57,7 @@ public class Canvas {
 
             checkCanvasBoundary(x, y);
 
-            newNodes[x][y] = new Node(x, y, Node.Status.BORDER, color);
+            newNodes[x][y] = color;
         }
 
         return new Canvas(newNodes, w, h);
@@ -94,54 +70,11 @@ public class Canvas {
 
         checkCanvasBoundary(x, y);
 
-        Node[][] newNodes = copy(nodes, w, h);
+        char[][] newNodes = copy(nodes);
 
-        newNodes[x][y] = new Node(x, y, Node.Status.BORDER, color);
-
-        return new Canvas(newNodes, w, h);
-    }
-
-    public Canvas paint(List<Point> points, char color) {
-
-        Node[][] newNodes = copy(nodes, w, h);
-
-        for (Point p : points) {
-            int x = p.getX();
-            int y = p.getY();
-
-            checkCanvasBoundary(x, y);
-
-            newNodes[x][y] = new Node(x, y, Node.Status.PAINT, color);
-        }
+        newNodes[x][y] = color;
 
         return new Canvas(newNodes, w, h);
-    }
-
-    public Canvas paint(Point point, char color) {
-
-        int x = point.getX();
-        int y = point.getY();
-
-        checkCanvasBoundary(x, y);
-
-        Node[][] newNodes = copy(nodes, w, h);
-
-        newNodes[x][y] = new Node(x, y, Node.Status.PAINT, color);
-
-        return new Canvas(newNodes, w, h);
-    }
-
-    private Node[][] copy(Node[][] oriNodes, int w, int h) {
-
-        Node[][] newNodes = new Node[w][h];
-
-        for (int x = 0; x < w; x++) {
-            for (int y = 0; y < h; y++) {
-                newNodes[x][y] = oriNodes[x][y];
-            }
-        }
-
-        return newNodes;
     }
 
     private void checkCanvasBoundary(int x, int y) {
@@ -167,8 +100,7 @@ public class Canvas {
                     continue;
                 }
 
-                Node node = nodes[x][y];
-                sb.append(node.getColor());
+                sb.append(nodes[x][y]);
             }
             sb.append("\n");
         }
@@ -176,20 +108,15 @@ public class Canvas {
         return sb.toString();
     }
 
-    @Builder
-    @Value
-    @With
-    private static class Node {
-
-        private int x;
-        private int y;
-        private Status status;
-        private char color;
-
-        enum Status {
-            EMPTY,
-            BORDER,
-            PAINT
+    public char[][] copy(char[][] original) {
+        if (original == null) {
+            return null;
         }
+
+        final char[][] result = new char[original.length][];
+        for (int i = 0; i < original.length; i++) {
+            result[i] = Arrays.copyOf(original[i], original[i].length);
+        }
+        return result;
     }
 }

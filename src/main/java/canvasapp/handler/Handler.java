@@ -2,7 +2,9 @@ package canvasapp.handler;
 
 import canvasapp.command.*;
 import canvasapp.context.Context;
-import canvasapp.drawable.Line;
+import canvasapp.drawable.FillDrawable;
+import canvasapp.drawable.LineDrawable;
+import canvasapp.drawable.RectDrawable;
 
 public class Handler {
 
@@ -54,8 +56,10 @@ public class Handler {
         }
 
         Command command;
-        if (action.equals("L")) command = new DrawLineCommand(x1 - 1, y1 - 1, x2 - 1, y2 - 1);
-        else if (action.equals("R")) command = new DrawRectangleCommand(x1 - 1, y1 - 1, x2 - 1, y2 - 1, LINE_COLOR);
+        if (action.equals("L")) command = new DrawCommand(new LineDrawable(x1 - 1, y1 - 1, x2 - 1, y2 - 1));
+        else if (action.equals("R")) command = new DrawCommand(new RectDrawable(x1 - 1, y1 - 1, x2 - 1, y2 - 1, LINE_COLOR));
+//        if (action.equals("L")) command = new DrawLineCommand(x1 - 1, y1 - 1, x2 - 1, y2 - 1);
+//        else if (action.equals("R")) command = new DrawRectangleCommand(x1 - 1, y1 - 1, x2 - 1, y2 - 1, LINE_COLOR);
         else throw new IllegalArgumentException("Invalid command");
 
         return context.execute(command);
@@ -82,7 +86,7 @@ public class Handler {
 
         char c = input[3].charAt(0);
 
-        Command command = new PaintCommand(x - 1, y - 1, c);
+        Command command = new DrawCommand(new FillDrawable(x - 1, y - 1, c));
         return context.execute(command);
     }
 }
