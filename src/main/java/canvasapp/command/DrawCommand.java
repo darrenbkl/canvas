@@ -16,6 +16,7 @@ public class DrawCommand implements Command {
 
         if (canvas == null) throw new IllegalStateException("Canvas must be created");
 
+        shape.draw(canvas);
         return drawable.draw(canvas);
     }
 }

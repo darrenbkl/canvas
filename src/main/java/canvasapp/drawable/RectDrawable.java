@@ -21,6 +21,10 @@ public class RectDrawable implements Drawable {
             throw new InvalidCoordinates("Coordinates must form a rectangle");
         }
 
+        if (x2 < x1 || y2 < y1) {
+            throw new InvalidCoordinates("Point 2 must be larger than point 1");
+        }
+
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x2;
@@ -33,12 +37,14 @@ public class RectDrawable implements Drawable {
 
         List<Point> points = new ArrayList<>();
 
-        for (int y = y1; y <= y2; y++) {
-            for (int x = x1; x <= x2; x++) {
-                if (x == x1 || x == x2 || y == y1 || y == y2) {
-                    points.add(new Point(x, y));
-                }
-            }
+        for (int x = x1; x <= x2; x++) {
+            points.add(new Point(x, y1));
+            points.add(new Point(x, y2));
+        }
+
+        for (int y = y1 + 1; y < y2; y++) {
+            points.add(new Point(x1, y));
+            points.add(new Point(x2, y));
         }
 
         return canvas.draw(points, color);

@@ -47,6 +47,9 @@ public class Canvas {
         return nodes[x][y] == color;
     }
 
+
+//    public Canvas drawRect()
+
     public Canvas draw(List<Point> points, char color) {
 
         char[][] newNodes = copy(nodes);

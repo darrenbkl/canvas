@@ -16,8 +16,15 @@ public class LineDrawable implements Drawable {
 
     public LineDrawable(int x1, int y1, int x2, int y2) {
 
-        if ((x1 == x2) == (y1 == y2)) {
+        int deltaX = x2 - x1;
+        int deltaY = y2 - y1;
+
+        if((deltaX == 0 && deltaY == 0) || (deltaX != 0 && deltaY != 0)) {
             throw new InvalidCoordinates("Coordinates must form a straight line");
+        }
+
+        if(x2 < x1 || y2 < y1) {
+            throw new InvalidCoordinates("Point 2 must be larger than point 1");
         }
 
         this.x1 = x1;
@@ -26,13 +33,16 @@ public class LineDrawable implements Drawable {
         this.y2 = y2;
     }
 
+
+
     @Override
     public Canvas draw(Canvas canvas) {
+
+        return canvas.drawLine(x1, y1, x2, y2);
         List<Point> points = new ArrayList<>();
 
         for (int x = x1; x <= x2; x++) {
             for (int y = y1; y <= y2; y++) {
-                if(!canvas.isWithinCanvas(x, y)) throw new InvalidCoordinates("Asdf");
                 points.add(new Point(x, y));
             }
         }
