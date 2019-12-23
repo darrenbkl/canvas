@@ -40,22 +40,21 @@ public class LineDrawableTest extends AbstractBaseTest {
     @Test
     public void whenDraw_shouldReturnUpdatedCanvas() {
 
-
         Canvas currentCanvas = new Canvas(5, 5);
 
         Drawable drawable = new LineDrawable(2, 0, 2, 4);
 
-        Canvas newCanvas = drawable.draw(currentCanvas);
+        Canvas newCanvas = drawable.draw(currentCanvas, 'x');
         String actual = newCanvas.toString();
 
         StringBuilder sb = new StringBuilder();
-        sb.append("-------");sb.append(System.getProperty("line.separator"));
-        sb.append("|  x  |");sb.append(System.getProperty("line.separator"));
-        sb.append("|  x  |");sb.append(System.getProperty("line.separator"));
-        sb.append("|  x  |");sb.append(System.getProperty("line.separator"));
-        sb.append("|  x  |");sb.append(System.getProperty("line.separator"));
-        sb.append("|  x  |");sb.append(System.getProperty("line.separator"));
-        sb.append("-------");sb.append(System.getProperty("line.separator"));
+        sb.append("-------\n");
+        sb.append("|  x  |\n");
+        sb.append("|  x  |\n");
+        sb.append("|  x  |\n");
+        sb.append("|  x  |\n");
+        sb.append("|  x  |\n");
+        sb.append("-------\n");
         String expected = sb.toString();
 
         assertThat(actual, is(expected));

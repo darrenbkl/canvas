@@ -10,22 +10,13 @@ import static org.junit.Assert.assertThat;
 
 public class RectDrawableTest extends AbstractBaseTest {
 
-//    @Test
-//    public void givenInvalidDimension_whenBuild_shouldThrowException() {
-//
-//        exceptionRule.expect(InvalidCoordinates.class);
-//        exceptionRule.expectMessage("Invalid dimension");
-//
-//        new DrawRectangleCommand(-1, -1, 5, 5, 'o');
-//    }
-
     @Test
     public void givenPoint_whenBuild_shouldThrowException() {
 
         exceptionRule.expect(InvalidCoordinates.class);
         exceptionRule.expectMessage("Coordinates must form a rectangle");
 
-        new RectDrawable(1, 1, 1, 1, 'o');
+        new RectDrawable(1, 1, 1, 1);
     }
 
     @Test
@@ -34,7 +25,16 @@ public class RectDrawableTest extends AbstractBaseTest {
         exceptionRule.expect(InvalidCoordinates.class);
         exceptionRule.expectMessage("Coordinates must form a rectangle");
 
-        new RectDrawable(1, 1, 5, 1, 'o');
+        new RectDrawable(1, 1, 5, 1);
+    }
+
+    @Test
+    public void givenPoint2SmallerThanPoint1_whenBuild_shouldThrowException() {
+
+        exceptionRule.expect(InvalidCoordinates.class);
+        exceptionRule.expectMessage("Point 2 must be larger than point 1");
+
+        new RectDrawable(5, 5, 1, 1);
     }
 
     @Test
@@ -42,9 +42,9 @@ public class RectDrawableTest extends AbstractBaseTest {
 
         Canvas currentCanvas = new Canvas(5, 5);
 
-        Drawable drawable = new RectDrawable(1, 1, 3, 4, 'o');
+        Drawable drawable = new RectDrawable(1, 1, 3, 4);
 
-        Canvas newCanvas = drawable.draw(currentCanvas);
+        Canvas newCanvas = drawable.draw(currentCanvas ,'o');
 
         StringBuilder sb = new StringBuilder();
         sb.append("-------");sb.append(System.getProperty("line.separator"));

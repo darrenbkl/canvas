@@ -1,9 +1,11 @@
 package canvasapp.handler;
 
-import canvasapp.command.*;
+import canvasapp.command.Command;
+import canvasapp.command.CreateCanvasCommand;
+import canvasapp.command.DrawCommand;
+import canvasapp.command.FillCommand;
 import canvasapp.context.Context;
 import canvasapp.drawable.Drawable;
-import canvasapp.drawable.FillDrawable;
 import canvasapp.drawable.LineDrawable;
 import canvasapp.drawable.RectDrawable;
 
@@ -59,10 +61,10 @@ public class Handler {
         Drawable drawable;
 
         if (action.equals("L")) drawable = new LineDrawable(x1 - 1, y1 - 1, x2 - 1, y2 - 1);
-        else if (action.equals("R")) drawable = new RectDrawable(x1 - 1, y1 - 1, x2 - 1, y2 - 1, LINE_COLOR);
+        else if (action.equals("R")) drawable = new RectDrawable(x1 - 1, y1 - 1, x2 - 1, y2 - 1);
         else throw new IllegalArgumentException("Invalid command");
 
-        Command command = new DrawCommand(drawable);
+        Command command = new DrawCommand(drawable, LINE_COLOR);
         return context.execute(command);
     }
 
@@ -85,9 +87,9 @@ public class Handler {
             throw new IllegalArgumentException("Color must be a single character");
         }
 
-        char c = input[3].charAt(0);
+        char color = input[3].charAt(0);
 
-        Command command = new DrawCommand(new FillDrawable(x - 1, y - 1, c));
+        Command command = new FillCommand(x - 1, y - 1, color);
         return context.execute(command);
     }
 }

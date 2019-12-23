@@ -4,7 +4,8 @@ import canvasapp.exception.InvalidCoordinates;
 import lombok.Value;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.LinkedList;
+import java.util.Queue;
 
 @Value
 public class Canvas {
@@ -32,57 +33,129 @@ public class Canvas {
         this.h = h;
     }
 
-    public boolean isWithinCanvas(int x, int y) {
+    private void checkCanvasBoundary(int x, int y) {
+        if (!isWithinCanvas(x, y))
+            throw new InvalidCoordinates("Coordinates must be within canvas dimension");
+    }
+
+    private boolean isWithinCanvas(int x, int y) {
         if (x < 0 || x >= w || y < 0 || y >= h) return false;
         else return true;
     }
 
-    public char getColor(int x, int y) {
+    private boolean isColor(char[][]n, int x, int y, char color) {
         checkCanvasBoundary(x, y);
-        return nodes[x][y];
+        return n[x][y] == color;
     }
 
-    public boolean isColor(int x, int y, char color) {
-        checkCanvasBoundary(x, y);
-        return nodes[x][y] == color;
-    }
+    public Canvas drawLine(int x1, int y1, int x2, int y2, char color) {
 
-
-//    public Canvas drawRect()
-
-    public Canvas draw(List<Point> points, char color) {
+        checkCanvasBoundary(x1, y1);
+        checkCanvasBoundary(x2, y1);
 
         char[][] newNodes = copy(nodes);
 
-        for (Point p : points) {
-            int x = p.getX();
-            int y = p.getY();
-
-            checkCanvasBoundary(x, y);
-
-            newNodes[x][y] = color;
+        for (int x = x1; x <= x2; x++) {
+            for (int y = y1; y <= y2; y++) {
+                newNodes[x][y] = color;
+            }
         }
 
         return new Canvas(newNodes, w, h);
     }
 
-    public Canvas draw(Point point, char color) {
-
-        int x = point.getX();
-        int y = point.getY();
-
-        checkCanvasBoundary(x, y);
+    public Canvas drawRect(int x1, int y1, int x2, int y2, char color) {
 
         char[][] newNodes = copy(nodes);
 
-        newNodes[x][y] = color;
+        for (int x = x1; x <= x2; x++) {
+            newNodes[x][y1] = color;
+            newNodes[x][y2] = color;
+        }
+
+        for (int y = y1 + 1; y < y2; y++) {
+            newNodes[x1][y] = color;
+            newNodes[x2][y] = color;
+        }
 
         return new Canvas(newNodes, w, h);
     }
 
-    private void checkCanvasBoundary(int x, int y) {
-        if (x < 0 || x >= w || y < 0 || y >= h)
-            throw new InvalidCoordinates("Coordinates must be within canvas dimension");
+    public Canvas fill(int x, int y, char replacement) {
+
+        checkCanvasBoundary(x, y);
+
+        char target = nodes[x][y];
+
+        if(target == replacement) return this;
+
+//        char[][] newN = doFillUsingStack(nodes, x, y, target, replacement);
+        char[][] newN = doFillUsingQueue(nodes, x, y, target, replacement);
+
+        return new Canvas(newN, w, h);
+    }
+
+    private char[][] doFillUsingStack(char[][] n, int x, int y, char target, char replacement) {
+
+        char[][] newNodes = copy(n);
+
+        // base case for recursion
+        if(!this.isWithinCanvas(x, y)) return n;
+
+        if (this.isColor(n, x, y, target)) return n;
+        else {
+            newNodes[x][y] = replacement;
+        }
+
+        newNodes = doFillUsingStack(newNodes, x, y + 1, target, replacement);
+        newNodes = doFillUsingStack(newNodes, x, y - 1, target, replacement);
+        newNodes = doFillUsingStack(newNodes, x - 1, y, target, replacement);
+        newNodes = doFillUsingStack(newNodes, x + 1, y, target, replacement);
+
+        return newNodes;
+    }
+
+    private char[][] doFillUsingQueue(char[][] n, int x, int y, char target, char replacement) {
+
+        char[][] newNodes = copy(n);
+
+        Queue<Point> q = new LinkedList<>();
+
+        // if is wall or same color
+        if (newNodes[x][y] != target) return n;
+        else {
+            newNodes[x][y] = replacement;
+        }
+
+        q.add(new Point(x, y));
+
+        while (!q.isEmpty()) {
+
+            Point currNode = q.remove();
+            int curX = currNode.getX();
+            int curY = currNode.getY();
+
+            newNodes = checkNeighbour(newNodes, q, curX - 1, curY, target, replacement);
+            newNodes = checkNeighbour(newNodes, q, curX + 1, curY, target, replacement);
+            newNodes = checkNeighbour(newNodes, q, curX, curY - 1, target, replacement);
+            newNodes = checkNeighbour(newNodes, q, curX, curY + 1, target, replacement);
+        }
+
+        return newNodes;
+    }
+
+    private char[][] checkNeighbour(char[][] n, Queue<Point> q, int x, int y, char target, char replacement) {
+
+        if(!this.isWithinCanvas(x, y)) return n;
+
+        char[][] newNodes = copy(n);
+
+        if (newNodes[x][y] == target) {
+            newNodes[x][y] = replacement;
+            q.add(new Point(x, y));
+        }
+
+        return newNodes;
     }
 
     @Override
@@ -111,7 +184,7 @@ public class Canvas {
         return sb.toString();
     }
 
-    public char[][] copy(char[][] original) {
+    private char[][] copy(char[][] original) {
         if (original == null) {
             return null;
         }

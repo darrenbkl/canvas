@@ -3,14 +3,14 @@ package canvasapp.command;
 import canvasapp.AbstractBaseTest;
 import canvasapp.Canvas;
 import canvasapp.drawable.Drawable;
-import canvasapp.drawable.LineDrawable;
+import canvasapp.drawable.RectDrawable;
 import canvasapp.exception.InvalidCoordinates;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class DrawLineCommandTest extends AbstractBaseTest {
+public class DrawRectCommandTest extends AbstractBaseTest {
 
 //    @Test
 //    public void givenInvalidDimension_whenBuild_shouldThrowException() {
@@ -18,45 +18,46 @@ public class DrawLineCommandTest extends AbstractBaseTest {
 //        exceptionRule.expect(InvalidCoordinates.class);
 //        exceptionRule.expectMessage("Invalid dimension");
 //
-//        new DrawLineCommand(-1, 0, -1, 4);
+//        new DrawRectangleCommand(-1, -1, 5, 5, 'o');
 //    }
 
 //    @Test
-//    public void givenNonStraightLine_whenBuild_shouldThrowException() {
+//    public void givenNonRectangle_whenBuild_shouldThrowException() {
 //
 //        exceptionRule.expect(InvalidCoordinates.class);
-//        exceptionRule.expectMessage("Coordinates must form a straight line");
+//        exceptionRule.expectMessage("Coordinates must form a rectangle");
 //
-//        new DrawLineCommand(0, 0, 5, 5);
+//        new DrawRectangleCommand(1, 1, 5, 1, 'o');
 //    }
 
     @Test
-    public void whenExecuteLineDrawable_shouldReturnUpdatedCanvas() {
+    public void whenExecuteRectDrawable_shouldReturnUpdatedCanvas() {
 
         Canvas currentCanvas = new Canvas(5, 5);
 
-        Drawable drawable = new LineDrawable(2, 0, 2, 4);
-        Command command = new DrawCommand(drawable, 'x');
+        Drawable drawable = new RectDrawable(1, 1, 3, 4);
+        Command command = new DrawCommand(drawable, 'o');
 
         Canvas newCanvas = command.execute(currentCanvas);
-        String actual = newCanvas.toString();
 
         StringBuilder sb = new StringBuilder();
         sb.append("-------");
         sb.append(System.getProperty("line.separator"));
-        sb.append("|  x  |");
+        sb.append("|     |");
         sb.append(System.getProperty("line.separator"));
-        sb.append("|  x  |");
+        sb.append("| ooo |");
         sb.append(System.getProperty("line.separator"));
-        sb.append("|  x  |");
+        sb.append("| o o |");
         sb.append(System.getProperty("line.separator"));
-        sb.append("|  x  |");
+        sb.append("| o o |");
         sb.append(System.getProperty("line.separator"));
-        sb.append("|  x  |");
+        sb.append("| ooo |");
         sb.append(System.getProperty("line.separator"));
         sb.append("-------");
         sb.append(System.getProperty("line.separator"));
         String expected = sb.toString();
+
+        String actual = newCanvas.toString();
 
         assertThat(actual, is(expected));
     }

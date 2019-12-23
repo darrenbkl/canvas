@@ -1,5 +1,6 @@
-package canvasapp;
+package canvasapp.handler;
 
+import canvasapp.AbstractBaseTest;
 import canvasapp.context.DrawingContext;
 import canvasapp.handler.Handler;
 import org.junit.Test;

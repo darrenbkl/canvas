@@ -1,5 +1,8 @@
-package canvasapp;
+package canvasapp.handler;
 
+import canvasapp.AbstractBaseTest;
+import canvasapp.Canvas;
+import canvasapp.Point;
 import canvasapp.context.DrawingContext;
 import canvasapp.handler.Handler;
 import org.junit.Test;
@@ -91,12 +94,14 @@ public class CanvasHandlerPaintTest extends AbstractBaseTest {
     }
 
     private Canvas prepareCanvas(Canvas canvas) {
-        return canvas.draw(Arrays.asList(
-                new Point(2, 0),
-                new Point(2, 1),
-                new Point(2, 2),
-                new Point(2, 3),
-                new Point(2, 4)
-        ), 'x');
+
+        return canvas.drawLine(2, 0, 2, 4, 'x');
+//        return canvas.draw(Arrays.asList(
+//                new Point(2, 0),
+//                new Point(2, 1),
+//                new Point(2, 2),
+//                new Point(2, 3),
+//                new Point(2, 4)
+//        ), 'x');
     }
 }

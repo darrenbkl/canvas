@@ -21,7 +21,6 @@ public class CanvasApplication {
 
             try {
                 switch (command) {
-
                     case "C":
                         String output = canvasHandler.create(input);
                         System.out.println(output);

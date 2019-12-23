@@ -1,11 +1,7 @@
 package canvasapp.drawable;
 
 import canvasapp.Canvas;
-import canvasapp.Point;
 import canvasapp.exception.InvalidCoordinates;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class LineDrawable implements Drawable {
 
@@ -33,20 +29,8 @@ public class LineDrawable implements Drawable {
         this.y2 = y2;
     }
 
-
-
     @Override
-    public Canvas draw(Canvas canvas) {
-
-        return canvas.drawLine(x1, y1, x2, y2);
-        List<Point> points = new ArrayList<>();
-
-        for (int x = x1; x <= x2; x++) {
-            for (int y = y1; y <= y2; y++) {
-                points.add(new Point(x, y));
-            }
-        }
-
-        return canvas.draw(points, 'x');
+    public Canvas draw(Canvas canvas, char color) {
+        return canvas.drawLine(x1, y1, x2, y2, color);
     }
 }

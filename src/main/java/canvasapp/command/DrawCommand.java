@@ -6,9 +6,11 @@ import canvasapp.drawable.Drawable;
 public class DrawCommand implements Command {
 
     private Drawable drawable;
+    private char color;
 
-    public DrawCommand(Drawable drawable) {
+    public DrawCommand(Drawable drawable, char color) {
         this.drawable = drawable;
+        this.color = color;
     }
 
     @Override
@@ -16,7 +18,6 @@ public class DrawCommand implements Command {
 
         if (canvas == null) throw new IllegalStateException("Canvas must be created");
 
-        shape.draw(canvas);
-        return drawable.draw(canvas);
+        return drawable.draw(canvas, color);
     }
 }

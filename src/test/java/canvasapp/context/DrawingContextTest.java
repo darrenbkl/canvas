@@ -19,7 +19,7 @@ public class DrawingContextTest {
         Context context = new DrawingContext(canvas);
 
         Drawable drawable = new LineDrawable(2, 0, 2, 4);
-        Command command = new DrawCommand(drawable);
+        Command command = new DrawCommand(drawable, 'x');
         String actual = context.execute(command);
 
         StringBuilder sb = new StringBuilder();
