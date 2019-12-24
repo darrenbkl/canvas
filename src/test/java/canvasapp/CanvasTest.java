@@ -110,13 +110,13 @@ public class CanvasTest extends AbstractBaseTest {
         Canvas updatedCanvas = canvas.drawRect(1, 1, 3, 3, 'x');
 
         StringBuilder sb = new StringBuilder();
-        sb.append("-------");sb.append(System.getProperty("line.separator"));
-        sb.append("|     |");sb.append(System.getProperty("line.separator"));
-        sb.append("| xxx |");sb.append(System.getProperty("line.separator"));
-        sb.append("| x x |");sb.append(System.getProperty("line.separator"));
-        sb.append("| xxx |");sb.append(System.getProperty("line.separator"));
-        sb.append("|     |");sb.append(System.getProperty("line.separator"));
-        sb.append("-------");sb.append(System.getProperty("line.separator"));
+        sb.append("-------\n");
+        sb.append("|     |\n");
+        sb.append("| xxx |\n");
+        sb.append("| x x |\n");
+        sb.append("| xxx |\n");
+        sb.append("|     |\n");
+        sb.append("-------\n");
         String expected = sb.toString();
 
         String actual = updatedCanvas.toString();
@@ -144,11 +144,11 @@ public class CanvasTest extends AbstractBaseTest {
         String actual = updatedCanvas.toString();
 
         StringBuilder sb = new StringBuilder();
-        sb.append("-----");sb.append(System.getProperty("line.separator"));
-        sb.append("|ooo|");sb.append(System.getProperty("line.separator"));
-        sb.append("|ooo|");sb.append(System.getProperty("line.separator"));
-        sb.append("|ooo|");sb.append(System.getProperty("line.separator"));
-        sb.append("-----");sb.append(System.getProperty("line.separator"));
+        sb.append("-----\n");
+        sb.append("|ooo|\n");
+        sb.append("|ooo|\n");
+        sb.append("|ooo|\n");
+        sb.append("-----\n");
         String expected = sb.toString();
 
         assertThat(actual, is(expected));

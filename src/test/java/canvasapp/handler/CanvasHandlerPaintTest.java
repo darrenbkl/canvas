@@ -2,12 +2,8 @@ package canvasapp.handler;
 
 import canvasapp.AbstractBaseTest;
 import canvasapp.Canvas;
-import canvasapp.Point;
 import canvasapp.context.DrawingContext;
-import canvasapp.handler.Handler;
 import org.junit.Test;
-
-import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

@@ -22,7 +22,7 @@ public class Canvas {
         this.h = h;
         this.nodes = new char[w][h];
 
-        for (char[] row: nodes) {
+        for (char[] row : nodes) {
             Arrays.fill(row, ' ');
         }
     }
@@ -33,17 +33,43 @@ public class Canvas {
         this.h = h;
     }
 
-    private void checkCanvasBoundary(int x, int y) {
-        if (!isWithinCanvas(x, y))
+
+//    private void checkCanvasBoundary(int x, int y) {
+//        if (!isWithinCanvas(x, y))
+//            throw new InvalidCoordinates("Coordinates must be within canvas dimension");
+//    }
+//
+//    private boolean isWithinCanvas(int x, int y) {
+//        return x >= 0 && x < w && y >= 0 && y < h;
+//    }
+//
+//    private boolean isColor(char[][] n, int x, int y, char color) {
+//        checkCanvasBoundary(x, y);
+//        return n[x][y] == color;
+//    }
+
+    private static void checkCanvasBoundary(char[][] n, int x, int y) {
+        if (!isWithinCanvas(n, x, y))
             throw new InvalidCoordinates("Coordinates must be within canvas dimension");
     }
 
-    private boolean isWithinCanvas(int x, int y) {
-        if (x < 0 || x >= w || y < 0 || y >= h) return false;
-        else return true;
+    private static boolean isWithinCanvas(char[][] n, int x, int y) {
+
+//        int w = n.length;
+//        if (x >= w) return false;
+//
+//        int h = n[x].length;
+//        if (y >= h) return false;
+
+        // shortcircuit evaluation
+        return x >= n.length && y >= n[x].length;
+
+//        return true;
+
+//        return x >= 0 && x < n && y >= 0 && y < n.getH();
     }
 
-    private boolean isColor(char[][]n, int x, int y, char color) {
+    private static boolean isColor(char[][] n, int x, int y, char color) {
         checkCanvasBoundary(x, y);
         return n[x][y] == color;
     }
@@ -87,22 +113,22 @@ public class Canvas {
 
         char target = nodes[x][y];
 
-        if(target == replacement) return this;
+        if (target == replacement) return this;
 
 //        char[][] newN = doFillUsingStack(nodes, x, y, target, replacement);
-        char[][] newN = doFillUsingQueue(nodes, x, y, target, replacement);
+        char[][] newNodes = doFillUsingQueue(nodes, x, y, target, replacement);
 
-        return new Canvas(newN, w, h);
+        return new Canvas(newNodes, w, h);
     }
 
-    private char[][] doFillUsingStack(char[][] n, int x, int y, char target, char replacement) {
+    private static char[][] doFillUsingStack(char[][] n, int x, int y, char target, char replacement) {
 
         char[][] newNodes = copy(n);
 
         // base case for recursion
-        if(!this.isWithinCanvas(x, y)) return n;
+        if (!isWithinCanvas(this, x, y)) return n;
 
-        if (this.isColor(n, x, y, target)) return n;
+        if (isColor(n, x, y, target)) return n;
         else {
             newNodes[x][y] = replacement;
         }
@@ -115,7 +141,7 @@ public class Canvas {
         return newNodes;
     }
 
-    private char[][] doFillUsingQueue(char[][] n, int x, int y, char target, char replacement) {
+    private static char[][] doFillUsingQueue(char[][] n, int x, int y, char target, char replacement) {
 
         char[][] newNodes = copy(n);
 
@@ -144,9 +170,9 @@ public class Canvas {
         return newNodes;
     }
 
-    private char[][] checkNeighbour(char[][] n, Queue<Point> q, int x, int y, char target, char replacement) {
+    private static char[][] checkNeighbour(char[][] n, Queue<Point> q, int x, int y, char target, char replacement) {
 
-        if(!this.isWithinCanvas(x, y)) return n;
+        if (!isWithinCanvas(canvas, x, y)) return n;
 
         char[][] newNodes = copy(n);
 
@@ -184,7 +210,7 @@ public class Canvas {
         return sb.toString();
     }
 
-    private char[][] copy(char[][] original) {
+    private static char[][] copy(char[][] original) {
         if (original == null) {
             return null;
         }
@@ -194,5 +220,11 @@ public class Canvas {
             result[i] = Arrays.copyOf(original[i], original[i].length);
         }
         return result;
+    }
+
+    @Value
+    private static class Point {
+        private int x;
+        private int y;
     }
 }
