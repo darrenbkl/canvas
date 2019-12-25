@@ -53,6 +53,7 @@ public class Handler {
             x1 = Integer.parseInt(input[1]);
             y1 = Integer.parseInt(input[2]);
             x2 = Integer.parseInt(input[3]);
+
             y2 = Integer.parseInt(input[4]);
         } catch (NumberFormatException ex) {
             throw new IllegalArgumentException("Invalid integer");

@@ -9,25 +9,24 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class CanvasHandlerPaintTest extends AbstractBaseTest {
-    
+
     @Test
     public void givenValidInput_whenPaint_shouldReturnCanvasString() {
 
         String[] input = {"B", "1", "1", "o"};
 
-        Canvas canvas = prepareCanvas(new Canvas(5, 5));
+        Canvas canvas = prepareCanvas();
         Handler handler = new Handler(new DrawingContext(canvas));
-
         String actual = handler.paint(input);
 
         StringBuilder sb = new StringBuilder();
-        sb.append("-------");sb.append(System.getProperty("line.separator"));
-        sb.append("|oox  |");sb.append(System.getProperty("line.separator"));
-        sb.append("|oox  |");sb.append(System.getProperty("line.separator"));
-        sb.append("|oox  |");sb.append(System.getProperty("line.separator"));
-        sb.append("|oox  |");sb.append(System.getProperty("line.separator"));
-        sb.append("|oox  |");sb.append(System.getProperty("line.separator"));
-        sb.append("-------");sb.append(System.getProperty("line.separator"));
+        sb.append("-------\n");
+        sb.append("|oox  |\n");
+        sb.append("|oox  |\n");
+        sb.append("|oox  |\n");
+        sb.append("|oox  |\n");
+        sb.append("|oox  |\n");
+        sb.append("-------\n");
         String expected = sb.toString();
 
         assertThat(actual, is(expected));
@@ -41,9 +40,7 @@ public class CanvasHandlerPaintTest extends AbstractBaseTest {
 
         String[] input = {"B", "1", "1", "o"};
 
-        Canvas canvas = null;
-        Handler handler = new Handler(new DrawingContext(canvas));
-
+        Handler handler = new Handler(new DrawingContext(null));
         handler.paint(input);
     }
 
@@ -55,9 +52,8 @@ public class CanvasHandlerPaintTest extends AbstractBaseTest {
 
         String[] input = {"B", "1", "1"};
 
-        Canvas canvas = prepareCanvas(new Canvas(5, 5));
+        Canvas canvas = prepareCanvas();
         Handler handler = new Handler(new DrawingContext(canvas));
-
         handler.paint(input);
     }
 
@@ -69,35 +65,28 @@ public class CanvasHandlerPaintTest extends AbstractBaseTest {
 
         String[] input = {"B", "1", "x", "o"};
 
-        Canvas canvas = prepareCanvas(new Canvas(5, 5));
+        Canvas canvas = prepareCanvas();
         Handler handler = new Handler(new DrawingContext(canvas));
-
         handler.paint(input);
     }
 
     @Test
-    public void givenInvalidInputType_whenPaint_shouldThrowException2() {
+    public void givenInvalidCharacter_whenPaint_shouldThrowException() {
 
         exceptionRule.expect(IllegalArgumentException.class);
         exceptionRule.expectMessage("Color must be a single character");
 
         String[] input = {"B", "1", "1", "oo"};
 
-        Canvas canvas = prepareCanvas(new Canvas(5, 5));
+        Canvas canvas = prepareCanvas();
         Handler handler = new Handler(new DrawingContext(canvas));
 
         handler.paint(input);
     }
 
-    private Canvas prepareCanvas(Canvas canvas) {
+    private Canvas prepareCanvas() {
 
+        Canvas canvas = new Canvas(5, 5);
         return canvas.drawLine(2, 0, 2, 4, 'x');
-//        return canvas.draw(Arrays.asList(
-//                new Point(2, 0),
-//                new Point(2, 1),
-//                new Point(2, 2),
-//                new Point(2, 3),
-//                new Point(2, 4)
-//        ), 'x');
     }
 }

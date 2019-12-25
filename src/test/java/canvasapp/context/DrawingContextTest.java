@@ -2,7 +2,9 @@ package canvasapp.context;
 
 import canvasapp.Canvas;
 import canvasapp.command.Command;
+import canvasapp.command.CreateCanvasCommand;
 import canvasapp.command.DrawCommand;
+import canvasapp.command.FillCommand;
 import canvasapp.drawable.Drawable;
 import canvasapp.drawable.LineDrawable;
 import org.junit.Test;
@@ -13,7 +15,27 @@ import static org.junit.Assert.assertThat;
 public class DrawingContextTest {
 
     @Test
-    public void givenLineDrawable_whenExecute_returnString() {
+    public void givenCreateCanvasCommand_whenExecute_thenReturnString() {
+
+        Context context = new DrawingContext();
+        Command command = new CreateCanvasCommand(5, 5);
+        String actual = context.execute(command);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("-------\n");
+        sb.append("|     |\n");
+        sb.append("|     |\n");
+        sb.append("|     |\n");
+        sb.append("|     |\n");
+        sb.append("|     |\n");
+        sb.append("-------\n");
+        String expected = sb.toString();
+
+        assertThat(actual, is(expected));
+    }
+
+    @Test
+    public void givenDrawCommand_whenExecute_thenReturnString() {
 
         Canvas canvas = new Canvas(5, 5);
         Context context = new DrawingContext(canvas);
@@ -23,13 +45,35 @@ public class DrawingContextTest {
         String actual = context.execute(command);
 
         StringBuilder sb = new StringBuilder();
-        sb.append("-------");sb.append(System.getProperty("line.separator"));
-        sb.append("|  x  |");sb.append(System.getProperty("line.separator"));
-        sb.append("|  x  |");sb.append(System.getProperty("line.separator"));
-        sb.append("|  x  |");sb.append(System.getProperty("line.separator"));
-        sb.append("|  x  |");sb.append(System.getProperty("line.separator"));
-        sb.append("|  x  |");sb.append(System.getProperty("line.separator"));
-        sb.append("-------");sb.append(System.getProperty("line.separator"));
+        sb.append("-------\n");
+        sb.append("|  x  |\n");
+        sb.append("|  x  |\n");
+        sb.append("|  x  |\n");
+        sb.append("|  x  |\n");
+        sb.append("|  x  |\n");
+        sb.append("-------\n");
+        String expected = sb.toString();
+
+        assertThat(actual, is(expected));
+    }
+
+    @Test
+    public void givenFillCommand_whenExecute_thenReturnString() {
+
+        Canvas canvas = new Canvas(5, 5);
+        Context context = new DrawingContext(canvas);
+
+        Command command = new FillCommand(3, 3, 'o');
+        String actual = context.execute(command);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("-------\n");
+        sb.append("|ooooo|\n");
+        sb.append("|ooooo|\n");
+        sb.append("|ooooo|\n");
+        sb.append("|ooooo|\n");
+        sb.append("|ooooo|\n");
+        sb.append("-------\n");
         String expected = sb.toString();
 
         assertThat(actual, is(expected));

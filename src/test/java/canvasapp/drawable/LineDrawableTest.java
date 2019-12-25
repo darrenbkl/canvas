@@ -16,7 +16,7 @@ public class LineDrawableTest extends AbstractBaseTest {
         exceptionRule.expect(InvalidCoordinates.class);
         exceptionRule.expectMessage("Coordinates must form a straight line");
 
-        new LineDrawable(0, 0, 5, 5);
+        new LineDrawable(0, 0, 0, 0);
     }
 
     @Test
@@ -25,7 +25,7 @@ public class LineDrawableTest extends AbstractBaseTest {
         exceptionRule.expect(InvalidCoordinates.class);
         exceptionRule.expectMessage("Coordinates must form a straight line");
 
-        new LineDrawable(5, 5, 5, 5);
+        new LineDrawable(0, 0, 5, 5);
     }
 
     @Test
@@ -58,5 +58,18 @@ public class LineDrawableTest extends AbstractBaseTest {
         String expected = sb.toString();
 
         assertThat(actual, is(expected));
+    }
+
+    @Test
+    public void givenOutOfBoundLine_whenDraw_shouldThrowException() {
+
+        exceptionRule.expect(InvalidCoordinates.class);
+        exceptionRule.expectMessage("Coordinates must be within canvas dimension");
+
+        Canvas currentCanvas = new Canvas(5, 5);
+
+        Drawable drawable = new LineDrawable(2, 0, 2, 5);
+
+        drawable.draw(currentCanvas, 'x');
     }
 }

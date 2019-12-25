@@ -2,7 +2,6 @@ package canvasapp.handler;
 
 import canvasapp.AbstractBaseTest;
 import canvasapp.context.DrawingContext;
-import canvasapp.handler.Handler;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -16,16 +15,15 @@ public class CanvasHandlerCreateTest extends AbstractBaseTest {
         String[] input = {"C", "3", "4"};
 
         Handler handler = new Handler(new DrawingContext());
-
         String actual = handler.create(input);
 
         StringBuilder sb = new StringBuilder();
-        sb.append("-----");sb.append(System.getProperty("line.separator"));
-        sb.append("|   |");sb.append(System.getProperty("line.separator"));
-        sb.append("|   |");sb.append(System.getProperty("line.separator"));
-        sb.append("|   |");sb.append(System.getProperty("line.separator"));
-        sb.append("|   |");sb.append(System.getProperty("line.separator"));
-        sb.append("-----");sb.append(System.getProperty("line.separator"));
+        sb.append("-----\n");
+        sb.append("|   |\n");
+        sb.append("|   |\n");
+        sb.append("|   |\n");
+        sb.append("|   |\n");
+        sb.append("-----\n");
         String expected = sb.toString();
 
         assertThat(actual, is(expected));

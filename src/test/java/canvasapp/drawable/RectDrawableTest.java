@@ -20,7 +20,7 @@ public class RectDrawableTest extends AbstractBaseTest {
     }
 
     @Test
-    public void givenNonRectangle_whenBuild_shouldThrowException() {
+    public void givenLine_whenBuild_shouldThrowException() {
 
         exceptionRule.expect(InvalidCoordinates.class);
         exceptionRule.expectMessage("Coordinates must form a rectangle");
@@ -38,26 +38,39 @@ public class RectDrawableTest extends AbstractBaseTest {
     }
 
     @Test
-    public void whenExecute_shouldReturnUpdatedCanvas() {
+    public void whenDraw_shouldReturnUpdatedCanvas() {
 
         Canvas currentCanvas = new Canvas(5, 5);
 
         Drawable drawable = new RectDrawable(1, 1, 3, 4);
 
-        Canvas newCanvas = drawable.draw(currentCanvas ,'o');
+        Canvas newCanvas = drawable.draw(currentCanvas, 'o');
 
         StringBuilder sb = new StringBuilder();
-        sb.append("-------");sb.append(System.getProperty("line.separator"));
-        sb.append("|     |");sb.append(System.getProperty("line.separator"));
-        sb.append("| ooo |");sb.append(System.getProperty("line.separator"));
-        sb.append("| o o |");sb.append(System.getProperty("line.separator"));
-        sb.append("| o o |");sb.append(System.getProperty("line.separator"));
-        sb.append("| ooo |");sb.append(System.getProperty("line.separator"));
-        sb.append("-------");sb.append(System.getProperty("line.separator"));
+        sb.append("-------\n");
+        sb.append("|     |\n");
+        sb.append("| ooo |\n");
+        sb.append("| o o |\n");
+        sb.append("| o o |\n");
+        sb.append("| ooo |\n");
+        sb.append("-------\n");
         String expected = sb.toString();
 
         String actual = newCanvas.toString();
 
         assertThat(actual, is(expected));
+    }
+
+    @Test
+    public void givenOutOfBoundRect_whenDraw_shouldThrowException() {
+
+        exceptionRule.expect(InvalidCoordinates.class);
+        exceptionRule.expectMessage("Coordinates must be within canvas dimension");
+
+        Canvas currentCanvas = new Canvas(5, 5);
+
+        Drawable drawable = new RectDrawable(0, 0, 5, 5);
+
+        drawable.draw(currentCanvas, 'x');
     }
 }

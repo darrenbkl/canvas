@@ -13,7 +13,7 @@ public class FillCommand implements Command {
         this.y = y;
         this.color = color;
     }
-    
+
     @Override
     public Canvas execute(Canvas canvas) {
         return canvas.fill(x, y, color);

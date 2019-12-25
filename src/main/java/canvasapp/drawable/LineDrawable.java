@@ -15,11 +15,11 @@ public class LineDrawable implements Drawable {
         int deltaX = x2 - x1;
         int deltaY = y2 - y1;
 
-        if((deltaX == 0 && deltaY == 0) || (deltaX != 0 && deltaY != 0)) {
+        if ((deltaX == 0 && deltaY == 0) || (deltaX != 0 && deltaY != 0)) {
             throw new InvalidCoordinates("Coordinates must form a straight line");
         }
 
-        if(x2 < x1 || y2 < y1) {
+        if (x2 < x1 || y2 < y1) {
             throw new InvalidCoordinates("Point 2 must be larger than point 1");
         }
 

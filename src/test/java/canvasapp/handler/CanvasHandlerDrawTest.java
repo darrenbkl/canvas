@@ -3,7 +3,6 @@ package canvasapp.handler;
 import canvasapp.AbstractBaseTest;
 import canvasapp.Canvas;
 import canvasapp.context.DrawingContext;
-import canvasapp.handler.Handler;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -18,17 +17,16 @@ public class CanvasHandlerDrawTest extends AbstractBaseTest {
 
         Canvas canvas = new Canvas(5, 5);
         Handler handler = new Handler(new DrawingContext(canvas));
-
         String actual = handler.draw(input);
 
         StringBuilder sb = new StringBuilder();
-        sb.append("-------");sb.append(System.getProperty("line.separator"));
-        sb.append("|  x  |");sb.append(System.getProperty("line.separator"));
-        sb.append("|  x  |");sb.append(System.getProperty("line.separator"));
-        sb.append("|  x  |");sb.append(System.getProperty("line.separator"));
-        sb.append("|  x  |");sb.append(System.getProperty("line.separator"));
-        sb.append("|  x  |");sb.append(System.getProperty("line.separator"));
-        sb.append("-------");sb.append(System.getProperty("line.separator"));
+        sb.append("-------\n");
+        sb.append("|  x  |\n");
+        sb.append("|  x  |\n");
+        sb.append("|  x  |\n");
+        sb.append("|  x  |\n");
+        sb.append("|  x  |\n");
+        sb.append("-------\n");
         String expected = sb.toString();
 
         assertThat(actual, is(expected));
@@ -42,9 +40,7 @@ public class CanvasHandlerDrawTest extends AbstractBaseTest {
 
         String[] input = {"L", "1", "1", "5", "1"};
 
-        Canvas canvas = null;
-        Handler handler = new Handler(new DrawingContext(canvas));
-
+        Handler handler = new Handler(new DrawingContext(null));
         handler.draw(input);
     }
 
