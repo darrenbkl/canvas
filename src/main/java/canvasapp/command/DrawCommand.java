@@ -2,6 +2,7 @@ package canvasapp.command;
 
 import canvasapp.Canvas;
 import canvasapp.drawable.Drawable;
+import canvasapp.exception.IllegalCanvasStateException;
 
 public class DrawCommand implements Command {
 
@@ -15,8 +16,7 @@ public class DrawCommand implements Command {
 
     @Override
     public Canvas execute(Canvas canvas) {
-
-        if (canvas == null) throw new IllegalStateException("Canvas must be created");
+        if (canvas == null) throw new IllegalCanvasStateException("Canvas must be created");
 
         return drawable.draw(canvas, color);
     }

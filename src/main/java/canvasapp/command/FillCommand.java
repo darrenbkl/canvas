@@ -1,6 +1,7 @@
 package canvasapp.command;
 
 import canvasapp.Canvas;
+import canvasapp.exception.IllegalCanvasStateException;
 
 public class FillCommand implements Command {
 
@@ -16,6 +17,8 @@ public class FillCommand implements Command {
 
     @Override
     public Canvas execute(Canvas canvas) {
+        if (canvas == null) throw new IllegalCanvasStateException("Canvas must be created");
+
         return canvas.fill(x, y, color);
     }
 }

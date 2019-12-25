@@ -31,7 +31,7 @@ public class CanvasApplication {
                         System.out.println(output);
                         break;
                     case "B":
-                        output = canvasHandler.paint(input);
+                        output = canvasHandler.fill(input);
                         System.out.println(output);
                         break;
                     case "Q":

@@ -8,6 +8,8 @@ import canvasapp.context.Context;
 import canvasapp.drawable.Drawable;
 import canvasapp.drawable.LineDrawable;
 import canvasapp.drawable.RectDrawable;
+import canvasapp.exception.IllegalCanvasStateException;
+import canvasapp.exception.InvalidInputFormat;
 
 public class Handler {
 
@@ -21,7 +23,7 @@ public class Handler {
 
     public String create(String[] input) {
 
-        if (input.length != 3) throw new IllegalArgumentException("Input length should be 3");
+        if (input.length != 3) throw new InvalidInputFormat("Input length should be 3");
 
         int w;
         int h;
@@ -30,7 +32,7 @@ public class Handler {
             w = Integer.parseInt(input[1]);
             h = Integer.parseInt(input[2]);
         } catch (NumberFormatException ex) {
-            throw new IllegalArgumentException("Invalid integer");
+            throw new InvalidInputFormat("Invalid integer");
         }
 
         Command command = new CreateCanvasCommand(w, h);
@@ -39,8 +41,8 @@ public class Handler {
 
     public String draw(String[] input) {
 
-        if (input.length != 5) throw new IllegalArgumentException("Input length should be 5");
-        if (!context.isInitialized()) throw new IllegalStateException("Canvas must be created");
+        if (input.length != 5) throw new InvalidInputFormat("Input length should be 5");
+        if (!context.isInitialized()) throw new IllegalCanvasStateException("Canvas must be created");
 
         String action = input[0];
 
@@ -56,23 +58,23 @@ public class Handler {
 
             y2 = Integer.parseInt(input[4]);
         } catch (NumberFormatException ex) {
-            throw new IllegalArgumentException("Invalid integer");
+            throw new InvalidInputFormat("Invalid integer");
         }
 
         Drawable drawable;
 
         if (action.equals("L")) drawable = new LineDrawable(x1 - 1, y1 - 1, x2 - 1, y2 - 1);
         else if (action.equals("R")) drawable = new RectDrawable(x1 - 1, y1 - 1, x2 - 1, y2 - 1);
-        else throw new IllegalArgumentException("Invalid command");
+        else throw new InvalidInputFormat("Invalid command");
 
         Command command = new DrawCommand(drawable, LINE_COLOR);
         return context.execute(command);
     }
 
-    public String paint(String[] input) {
+    public String fill(String[] input) {
 
-        if (input.length != 4) throw new IllegalArgumentException("Input length should be 4");
-        if (!context.isInitialized()) throw new IllegalStateException("Canvas must be created");
+        if (input.length != 4) throw new InvalidInputFormat("Input length should be 4");
+        if (!context.isInitialized()) throw new IllegalCanvasStateException("Canvas must be created");
 
         int x;
         int y;
@@ -81,11 +83,11 @@ public class Handler {
             x = Integer.parseInt(input[1]);
             y = Integer.parseInt(input[2]);
         } catch (NumberFormatException ex) {
-            throw new IllegalArgumentException("Invalid integer");
+            throw new InvalidInputFormat("Invalid integer");
         }
 
         if (input[3].length() > 1) {
-            throw new IllegalArgumentException("Color must be a single character");
+            throw new InvalidInputFormat("Color must be a single character");
         }
 
         char color = input[3].charAt(0);

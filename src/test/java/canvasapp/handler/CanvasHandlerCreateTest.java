@@ -2,6 +2,7 @@ package canvasapp.handler;
 
 import canvasapp.AbstractBaseTest;
 import canvasapp.context.DrawingContext;
+import canvasapp.exception.InvalidInputFormat;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -32,7 +33,7 @@ public class CanvasHandlerCreateTest extends AbstractBaseTest {
     @Test
     public void givenInvalidInputLength_whenCreate_shouldThrowException() {
 
-        exceptionRule.expect(IllegalArgumentException.class);
+        exceptionRule.expect(InvalidInputFormat.class);
         exceptionRule.expectMessage("Input length should be 3");
 
         String[] input = {"C", "5"};
@@ -45,7 +46,7 @@ public class CanvasHandlerCreateTest extends AbstractBaseTest {
     @Test
     public void givenInvalidInputType_whenCreate_shouldThrowException() {
 
-        exceptionRule.expect(IllegalArgumentException.class);
+        exceptionRule.expect(InvalidInputFormat.class);
         exceptionRule.expectMessage("Invalid integer");
 
         String[] input = {"C", "5", "X"};
