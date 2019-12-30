@@ -13,8 +13,8 @@ public class CanvasTest extends AbstractBaseTest {
 
         Canvas canvas = new Canvas(10, 20);
 
-        assertThat(canvas.getW(), is(10));
-        assertThat(canvas.getH(), is(20));
+        assertThat(canvas.getWidth(), is(10));
+        assertThat(canvas.getHeight(), is(20));
     }
 
     @Test

@@ -23,7 +23,7 @@ public class Handler {
 
     public String create(String[] input) {
 
-        if (input.length != 3) throw new InvalidInputFormat("Input length should be 3");
+        checkInputLength(input.length, 3);
 
         int w;
         int h;
@@ -41,8 +41,8 @@ public class Handler {
 
     public String draw(String[] input) {
 
-        if (input.length != 5) throw new InvalidInputFormat("Input length should be 5");
-        if (!context.isInitialized()) throw new IllegalCanvasStateException("Canvas must be created");
+        checkInputLength(input.length, 5);
+        checkContextInitialized();
 
         String action = input[0];
 
@@ -73,8 +73,8 @@ public class Handler {
 
     public String fill(String[] input) {
 
-        if (input.length != 4) throw new InvalidInputFormat("Input length should be 4");
-        if (!context.isInitialized()) throw new IllegalCanvasStateException("Canvas must be created");
+        checkInputLength(input.length, 4);
+        checkContextInitialized();
 
         int x;
         int y;
@@ -94,5 +94,13 @@ public class Handler {
 
         Command command = new FillCommand(x - 1, y - 1, color);
         return context.execute(command);
+    }
+
+    private void checkInputLength(int inputLength, int expected) {
+        if (inputLength != expected) throw new InvalidInputFormat("Input length should be " + expected);
+    }
+
+    private void checkContextInitialized() {
+        if (!context.isInitialized()) throw new IllegalCanvasStateException("Canvas must be created");
     }
 }
