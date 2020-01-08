@@ -1,24 +1,23 @@
 package canvasapp.command;
 
-import canvasapp.Canvas;
-import canvasapp.exception.IllegalCanvasStateException;
+import canvasapp.drawable.Canvas;
+import canvasapp.drawable.Color;
+import canvasapp.drawable.Point;
+import canvasapp.util.Validator;
 
 public class FillCommand implements Command {
 
-    private final int x;
-    private final int y;
-    private final char color;
+    private final Point point;
+    private final Color color;
 
     public FillCommand(int x, int y, char color) {
-        this.x = x;
-        this.y = y;
-        this.color = color;
+        this.point = new Point(x - 1, y - 1);
+        this.color = new Color(color);
     }
 
     @Override
     public Canvas execute(Canvas canvas) {
-        if (canvas == null) throw new IllegalCanvasStateException("Canvas must be created");
-
-        return canvas.fill(x, y, color);
+        Validator.validateCanvas(canvas);
+        return canvas.fill(point, color);
     }
 }

@@ -1,8 +1,8 @@
 package canvasapp.command;
 
 import canvasapp.AbstractBaseTest;
-import canvasapp.Canvas;
-import canvasapp.exception.InvalidCoordinates;
+import canvasapp.drawable.Canvas;
+import canvasapp.exception.IllegalCanvasStateException;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -11,23 +11,24 @@ import static org.junit.Assert.assertThat;
 public class FillCommandTest extends AbstractBaseTest {
 
     @Test
-    public void givenOutOfBoundPoint_whenExecute_shouldThrowException() {
+    public void givenNullCanvas_whenExecute_shouldThrowException() {
 
-        exceptionRule.expect(InvalidCoordinates.class);
-        exceptionRule.expectMessage("Coordinates must be within canvas dimension");
+        exceptionRule.expect(IllegalCanvasStateException.class);
+        exceptionRule.expectMessage("Canvas must be created");
 
-        Canvas existingCanvas = new Canvas(3, 3);
-        Command command = new FillCommand(-1, 2, 'o');
-        command.execute(existingCanvas);
+        Command command = new DrawLineCommand(3,1, 3, 5);
+        Canvas currentCanvas = null;
+        command.execute(currentCanvas);
     }
 
     @Test
-    public void whenExecute_shouldReturnUpdatedCanvas() {
+    public void givenValidInput_whenExecute_shouldReturnUpdatedCanvas() {
 
-        Canvas existingCanvas = new Canvas(3, 3);
-        Command c = new FillCommand(1, 2, 'o');
-        Canvas newCanvas = c.execute(existingCanvas);
-        String actual = newCanvas.toString();
+        Command command = new FillCommand(1, 2, 'o');
+
+        Canvas currentCanvas = new Canvas(3, 3);
+        Canvas result = command.execute(currentCanvas);
+        String actual = result.toString();
 
         StringBuilder sb = new StringBuilder();
         sb.append("-----\n");

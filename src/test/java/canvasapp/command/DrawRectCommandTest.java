@@ -1,9 +1,8 @@
 package canvasapp.command;
 
 import canvasapp.AbstractBaseTest;
-import canvasapp.Canvas;
-import canvasapp.drawable.Drawable;
-import canvasapp.drawable.RectDrawable;
+import canvasapp.drawable.Canvas;
+import canvasapp.exception.IllegalCanvasStateException;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -12,21 +11,32 @@ import static org.junit.Assert.assertThat;
 public class DrawRectCommandTest extends AbstractBaseTest {
 
     @Test
-    public void whenExecuteRectDrawable_shouldReturnUpdatedCanvas() {
+    public void givenNullCanvas_whenExecute_shouldThrowException() {
+
+        exceptionRule.expect(IllegalCanvasStateException.class);
+        exceptionRule.expectMessage("Canvas must be created");
+
+        Command command = new DrawLineCommand(3,1, 3, 5);
+        Canvas currentCanvas = null;
+        command.execute(currentCanvas);
+    }
+
+    @Test
+    public void givenValidInput_whenExecuteRectDrawable_shouldReturnUpdatedCanvas() {
+
+        Command command = new DrawRectCommand(2, 2, 4, 5);
 
         Canvas currentCanvas = new Canvas(5, 5);
-        Drawable drawable = new RectDrawable(1, 1, 3, 4);
-        Command command = new DrawCommand(drawable, 'o');
-        Canvas newCanvas = command.execute(currentCanvas);
-        String actual = newCanvas.toString();
+        Canvas result = command.execute(currentCanvas);
+        String actual = result.toString();
 
         StringBuilder sb = new StringBuilder();
         sb.append("-------\n");
         sb.append("|     |\n");
-        sb.append("| ooo |\n");
-        sb.append("| o o |\n");
-        sb.append("| o o |\n");
-        sb.append("| ooo |\n");
+        sb.append("| xxx |\n");
+        sb.append("| x x |\n");
+        sb.append("| x x |\n");
+        sb.append("| xxx |\n");
         sb.append("-------\n");
         String expected = sb.toString();
 

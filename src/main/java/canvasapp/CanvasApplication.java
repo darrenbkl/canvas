@@ -1,48 +1,42 @@
 package canvasapp;
 
-import canvasapp.context.DrawingContext;
-import canvasapp.handler.Handler;
+import canvasapp.command.Command;
+import canvasapp.command.CommandFactory;
+import canvasapp.drawable.Canvas;
+import canvasapp.exception.CanvasApplicationException;
 
+import java.io.InputStream;
 import java.util.Scanner;
 
 public class CanvasApplication {
 
     public static void main(String[] args) {
+        CanvasApplication canvasApplication = new CanvasApplication();
+        canvasApplication.run(System.in);
+    }
 
-        Scanner in = new Scanner(System.in);
-        Handler canvasHandler = new Handler(new DrawingContext());
+    public void run(InputStream inputStream) {
+        Scanner in = new Scanner(inputStream);
+        Canvas canvas = null;
+        CommandFactory commandFactory = new CommandFactory();
 
-        while (true) {
+        System.out.print("Enter command [C, L, R, B, Q]: ");
 
-            System.out.print("Enter command [C, L, R, B, Q]: ");
+        while (in.hasNext()) {
 
             String[] input = in.nextLine().trim().split("\\s+");
-            String command = input[0];
 
             try {
-                switch (command) {
-                    case "C":
-                        String output = canvasHandler.create(input);
-                        System.out.println(output);
-                        break;
-                    case "L":
-                    case "R":
-                        output = canvasHandler.draw(input);
-                        System.out.println(output);
-                        break;
-                    case "B":
-                        output = canvasHandler.fill(input);
-                        System.out.println(output);
-                        break;
-                    case "Q":
-                        System.out.println("Bye");
-                        return;
-                    default:
-                        System.out.println("Wrong command");
-                }
+                Command command = commandFactory.createCommand(input);
+                canvas = command.execute(canvas);
+                System.out.println(canvas.toString());
+            } catch (CanvasApplicationException cae) {
+                System.out.println(cae.getMessage());
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                System.out.println("Application error");
             }
+
+            System.out.print("Enter command [C, L, R, B, Q]: ");
         }
     }
 }

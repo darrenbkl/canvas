@@ -1,9 +1,8 @@
 package canvasapp.command;
 
 import canvasapp.AbstractBaseTest;
-import canvasapp.Canvas;
-import canvasapp.drawable.Drawable;
-import canvasapp.drawable.LineDrawable;
+import canvasapp.drawable.Canvas;
+import canvasapp.exception.IllegalCanvasStateException;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -12,14 +11,24 @@ import static org.junit.Assert.assertThat;
 public class DrawLineCommandTest extends AbstractBaseTest {
 
     @Test
-    public void whenExecuteLineDrawable_shouldReturnUpdatedCanvas() {
+    public void givenNullCanvas_whenExecute_shouldThrowException() {
+
+        exceptionRule.expect(IllegalCanvasStateException.class);
+        exceptionRule.expectMessage("Canvas must be created");
+
+        Command command = new DrawLineCommand(3,1, 3, 5);
+        Canvas currentCanvas = null;
+        command.execute(currentCanvas);
+    }
+
+    @Test
+    public void givenValidInput_whenExecuteLineDrawable_shouldReturnUpdatedCanvas() {
+
+        Command command = new DrawLineCommand(3,1, 3, 5);
 
         Canvas currentCanvas = new Canvas(5, 5);
-
-        Drawable drawable = new LineDrawable(2, 0, 2, 4);
-        Command command = new DrawCommand(drawable, 'x');
-        Canvas newCanvas = command.execute(currentCanvas);
-        String actual = newCanvas.toString();
+        Canvas result = command.execute(currentCanvas);
+        String actual = result.toString();
 
         StringBuilder sb = new StringBuilder();
         sb.append("-------\n");

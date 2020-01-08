@@ -1,5 +1,8 @@
-package canvasapp;
+package canvasapp.drawable;
 
+import canvasapp.AbstractBaseTest;
+import canvasapp.drawable.shape.Line;
+import canvasapp.drawable.shape.Rect;
 import canvasapp.exception.InvalidCoordinates;
 import org.junit.Test;
 
@@ -9,17 +12,7 @@ import static org.junit.Assert.assertThat;
 public class CanvasTest extends AbstractBaseTest {
 
     @Test
-    public void givenValidDimension_whenBuildCanvas_thenReturnCanvas() {
-
-        Canvas canvas = new Canvas(10, 20);
-
-        assertThat(canvas.getWidth(), is(10));
-        assertThat(canvas.getHeight(), is(20));
-    }
-
-    @Test
     public void givenZeroDimension_whenBuildCanvas_shouldThrowException() {
-
         exceptionRule.expect(InvalidCoordinates.class);
         exceptionRule.expectMessage("Invalid canvas dimension");
 
@@ -28,7 +21,6 @@ public class CanvasTest extends AbstractBaseTest {
 
     @Test
     public void givenNegativeDimension_whenBuildCanvas_shouldThrowException() {
-
         exceptionRule.expect(InvalidCoordinates.class);
         exceptionRule.expectMessage("Invalid canvas dimension");
 
@@ -36,8 +28,15 @@ public class CanvasTest extends AbstractBaseTest {
     }
 
     @Test
-    public void givenEmptyCanvas_whenPrint_shouldReturnStringRepresentation() {
+    public void givenOversizeDimension_whenBuildCanvas_shouldThrowException() {
+        exceptionRule.expect(InvalidCoordinates.class);
+        exceptionRule.expectMessage("Invalid canvas dimension");
 
+        new Canvas(1001, 1001);
+    }
+
+    @Test
+    public void whenToString_shouldReturnStringRepresentation() {
         Canvas canvas = new Canvas(3, 3);
         String actual = canvas.toString();
 
@@ -56,8 +55,7 @@ public class CanvasTest extends AbstractBaseTest {
     public void givenValidLine_whenDrawLine_shouldReturnUpdatedCanvas() {
 
         Canvas canvas = new Canvas(5, 5);
-
-        Canvas updatedCanvas = canvas.drawLine(2, 0, 2, 4, 'x');
+        Canvas updatedCanvas = canvas.draw(new Line(2, 0, 2, 4), new Color('x'));
         String actual = updatedCanvas.toString();
 
         StringBuilder sb = new StringBuilder();
@@ -75,21 +73,17 @@ public class CanvasTest extends AbstractBaseTest {
 
     @Test
     public void givenOutOfBoundLine_whenDrawLine_shouldThrowException() {
-
         exceptionRule.expect(InvalidCoordinates.class);
         exceptionRule.expectMessage("Coordinates must be within canvas dimension");
 
         Canvas canvas = new Canvas(5, 5);
-
-        canvas.drawLine(-1, 0, -1, 4, 'x');
+        canvas.draw(new Line(-1, 0, -1, 4), new Color('x'));
     }
 
     @Test
     public void givenValidRect_whenDrawRect_shouldReturnUpdatedCanvas() {
-
         Canvas canvas = new Canvas(5, 5);
-
-        Canvas updatedCanvas = canvas.drawRect(1, 1, 3, 3, 'x');
+        Canvas updatedCanvas = canvas.draw(new Rect(1, 1, 3, 3), new Color('x'));
         String actual = updatedCanvas.toString();
 
         StringBuilder sb = new StringBuilder();
@@ -107,21 +101,17 @@ public class CanvasTest extends AbstractBaseTest {
 
     @Test
     public void givenOutOfBoundRect_whenDrawRect_shouldThrowException() {
-
         exceptionRule.expect(InvalidCoordinates.class);
         exceptionRule.expectMessage("Coordinates must be within canvas dimension");
 
         Canvas canvas = new Canvas(5, 5);
-
-        canvas.drawLine(-1, 0, -1, 4, 'x');
+        canvas.draw(new Rect(-1, 0, 4, 4), new Color('x'));
     }
 
     @Test
-    public void givenValidPoint_whenFill_shouldReturnUpdatedCanvas() {
-
+    public void givenValidPointAndColor_whenFill_shouldReturnUpdatedCanvas() {
         Canvas canvas = new Canvas(3, 3);
-
-        Canvas updatedCanvas = canvas.fill(1, 2, 'o');
+        Canvas updatedCanvas = canvas.fill(new Point(1, 2), new Color('o'));
         String actual = updatedCanvas.toString();
 
         StringBuilder sb = new StringBuilder();
@@ -137,12 +127,10 @@ public class CanvasTest extends AbstractBaseTest {
 
     @Test
     public void givenOutOfBoundPoint_whenFill_shouldThrowException() {
-
         exceptionRule.expect(InvalidCoordinates.class);
         exceptionRule.expectMessage("Coordinates must be within canvas dimension");
 
         Canvas canvas = new Canvas(5, 5);
-
-        canvas.fill(-1, 0, 'o');
+        canvas.fill(new Point(-1, 0), new Color('o'));
     }
 }
