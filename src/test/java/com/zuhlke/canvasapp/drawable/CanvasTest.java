@@ -32,7 +32,7 @@ public class CanvasTest extends AbstractBaseTest {
         exceptionRule.expect(InvalidCoordinates.class);
         exceptionRule.expectMessage("Invalid canvas dimension");
 
-        new Canvas(1001, 1001);
+        new Canvas(501, 501);
     }
 
     @Test

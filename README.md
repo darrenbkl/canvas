@@ -9,7 +9,7 @@ java -jar target/canvasapp-1.0.0-shaded.jar
 ```
 
 ## Assumptions
-- Canvas size is limited to 1000 x 1000.
+- Canvas size is limited to 500 x 500.
 - User is able to restart by creating new canvas.
 - A line must be vertical or horizontal. The points that form a line must be different.
 - The points that form a rectangle must be different. 

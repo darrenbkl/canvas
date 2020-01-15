@@ -16,7 +16,7 @@ public class Canvas {
     private final int height;
 
     public Canvas(int width, int height) {
-        if (width < 1 || width > 1000 || height < 1 || height > 1000) {
+        if (width < 1 || width > 500 || height < 1 || height > 500) {
             throw new InvalidCoordinates("Invalid canvas dimension");
         }
 
