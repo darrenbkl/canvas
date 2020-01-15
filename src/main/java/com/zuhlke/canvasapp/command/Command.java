@@ -1,8 +1,12 @@
 package com.zuhlke.canvasapp.command;
 
+import com.zuhlke.canvasapp.DrawingContext;
 import com.zuhlke.canvasapp.drawable.Canvas;
 
 public interface Command {
+    Canvas execute();
 
-    Canvas execute(Canvas canvas);
+    void setContext(DrawingContext context);
+
+    void setParameters(String... params);
 }

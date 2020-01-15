@@ -6,7 +6,6 @@ import com.zuhlke.canvasapp.exception.IllegalCanvasStateException;
 import com.zuhlke.canvasapp.exception.InvalidInputFormat;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -17,7 +16,7 @@ public class ValidatorTest extends AbstractBaseTest {
         exceptionRule.expect(InvalidInputFormat.class);
         exceptionRule.expectMessage("Invalid integer");
 
-        Validator.parseStringToType(null, int.class);
+        Validator.parseInt(null);
     }
 
     @Test
@@ -26,18 +25,17 @@ public class ValidatorTest extends AbstractBaseTest {
         exceptionRule.expectMessage("Invalid integer");
 
         String arg = "c";
-        Validator.parseStringToType(arg, int.class);
+        Validator.parseInt(arg);
     }
 
     @Test
     public void givenValidInteger_whenParseInt_shouldReturnResult() {
         String arg = "420";
-        int actual = 420;
+        int expected = 420;
 
-        Object result = Validator.parseStringToType(arg, int.class);
+        int actual = Validator.parseInt(arg);
 
-        assertThat(result, instanceOf(int.class));
-        assertThat(result, is(actual));
+        assertThat(actual, is(expected));
     }
 
     @Test
@@ -45,7 +43,7 @@ public class ValidatorTest extends AbstractBaseTest {
         exceptionRule.expect(InvalidInputFormat.class);
         exceptionRule.expectMessage("Invalid character");
 
-        Validator.parseStringToType(null, char.class);
+        Validator.parseChar(null);
     }
 
     @Test
@@ -55,7 +53,7 @@ public class ValidatorTest extends AbstractBaseTest {
 
         String arg = "aa";
 
-        Validator.parseStringToType(arg, char.class);
+        Validator.parseChar(arg);
     }
 
     @Test
@@ -65,18 +63,17 @@ public class ValidatorTest extends AbstractBaseTest {
 
         String arg = "420";
 
-        Validator.parseStringToType(arg, char.class);
+        Validator.parseChar(arg);
     }
 
     @Test
     public void givenValidChar_whenParseChar_shouldReturnResult() {
         String arg = "a";
-        char actual = 'a';
+        char expected = 'a';
 
-        Object result = Validator.parseStringToType(arg, char.class);
+        char actual = Validator.parseChar(arg);
 
-        assertThat(result, instanceOf(char.class));
-        assertThat(result, is(actual));
+        assertThat(actual, is(expected));
     }
 
     @Test
@@ -90,6 +87,37 @@ public class ValidatorTest extends AbstractBaseTest {
     @Test
     public void givenCanvas_whenValidateCanvas_shouldNotThrowException() {
         Canvas canvas = new Canvas(1, 1);
+
         Validator.validateCanvas(canvas);
+    }
+
+    @Test
+    public void givenNull_whenValidateCommandParameters_shouldThrowException() {
+        exceptionRule.expect(InvalidInputFormat.class);
+        exceptionRule.expectMessage("Invalid parameters");
+
+        String[] args = null;
+        int length = 1;
+
+        Validator.validateCommandParameters(args, length);
+    }
+
+    @Test
+    public void givenMatchingInput_whenValidateCommandParameters_shouldNotThrowException() {
+        String[] args = {};
+        int length = 0;
+
+        Validator.validateCommandParameters(args, length);
+    }
+
+    @Test
+    public void givenMisMatchedInput_whenValidateCommandParameters_shouldNotThrowException() {
+        exceptionRule.expect(InvalidInputFormat.class);
+        exceptionRule.expectMessage("Invalid parameters");
+
+        String[] args = {"1"};
+        int length = 0;
+
+        Validator.validateCommandParameters(args, length);
     }
 }

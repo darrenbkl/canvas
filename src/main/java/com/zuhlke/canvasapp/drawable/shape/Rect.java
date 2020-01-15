@@ -18,11 +18,11 @@ public class Rect implements Shape {
     }
 
     public Rect(Point start, Point end) {
-        if (start.isEqualTo(end)) {
+        if (start.equals(end)) {
             throw new InvalidCoordinates("Coordinates must form a rectangle");
         }
 
-        if (start.onSameXAxisWith(end) || start.onSameYAxisWith(end)) {
+        if (start.isOnSameXAxisWith(end) || start.isOnSameYAxisWith(end)) {
             throw new InvalidCoordinates("Coordinates must form a rectangle");
         }
 

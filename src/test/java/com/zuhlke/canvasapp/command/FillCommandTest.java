@@ -1,6 +1,7 @@
 package com.zuhlke.canvasapp.command;
 
 import com.zuhlke.canvasapp.AbstractBaseTest;
+import com.zuhlke.canvasapp.CanvasApplication;
 import com.zuhlke.canvasapp.drawable.Canvas;
 import com.zuhlke.canvasapp.exception.IllegalCanvasStateException;
 import org.junit.Test;
@@ -16,18 +17,21 @@ public class FillCommandTest extends AbstractBaseTest {
         exceptionRule.expect(IllegalCanvasStateException.class);
         exceptionRule.expectMessage("Canvas must be created");
 
-        Command command = new DrawLineCommand(3, 1, 3, 5);
-        Canvas currentCanvas = null;
-        command.execute(currentCanvas);
+        Command command = new FillCommand();
+        command.setContext(new CanvasApplication(null, false));
+        command.setParameters("1", "1", "o");
+        command.execute();
     }
 
     @Test
     public void givenValidInput_whenExecute_shouldReturnUpdatedCanvas() {
 
-        Command command = new FillCommand(1, 2, 'o');
-
+        Command command = new FillCommand();
         Canvas currentCanvas = new Canvas(3, 3);
-        Canvas result = command.execute(currentCanvas);
+        command.setContext(new CanvasApplication(currentCanvas, false));
+        command.setParameters("1", "1", "o");
+
+        Canvas result = command.execute();
         String actual = result.toString();
 
         StringBuilder sb = new StringBuilder();

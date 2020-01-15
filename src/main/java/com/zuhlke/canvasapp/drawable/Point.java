@@ -58,15 +58,11 @@ public class Point {
                 (this.isLargerThan(pointA) && this.isSmallerThan(pointB));
     }
 
-    public boolean isEqualTo(Point anotherPoint) {
-        return this.equals(anotherPoint);
-    }
-
-    public boolean onSameXAxisWith(Point anotherPoint) {
+    public boolean isOnSameXAxisWith(Point anotherPoint) {
         return x == anotherPoint.x;
     }
 
-    public boolean onSameYAxisWith(Point anotherPoint) {
+    public boolean isOnSameYAxisWith(Point anotherPoint) {
         return y == anotherPoint.y;
     }
 

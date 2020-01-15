@@ -1,19 +1,23 @@
 package com.zuhlke.canvasapp.command;
 
 import com.zuhlke.canvasapp.drawable.Canvas;
+import com.zuhlke.canvasapp.util.Validator;
 
-public class CreateCanvasCommand implements Command {
+public class CreateCanvasCommand extends AbstractCommand {
 
-    private final int width;
-    private final int height;
+    private int width;
+    private int height;
 
-    public CreateCanvasCommand(int width, int height) {
-        this.width = width;
-        this.height = height;
+    @Override
+    public Canvas execute() {
+        return new Canvas(width, height);
     }
 
     @Override
-    public Canvas execute(Canvas canvas) {
-        return new Canvas(width, height);
+    public void setParameters(String... params) {
+        Validator.validateCommandParameters(params, 2);
+
+        width = Validator.parseInt(params[0]);
+        height = Validator.parseInt(params[1]);
     }
 }

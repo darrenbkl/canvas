@@ -8,16 +8,23 @@ import com.zuhlke.canvasapp.exception.CanvasApplicationException;
 import java.io.InputStream;
 import java.util.Scanner;
 
-public class CanvasApplication {
+public class CanvasApplication implements DrawingContext {
+
+    private boolean exit;
+    private Canvas canvas;
+
+    public CanvasApplication(Canvas canvas, boolean exit) {
+        this.canvas = canvas;
+        this.exit = exit;
+    }
 
     public static void main(String[] args) {
-        CanvasApplication canvasApplication = new CanvasApplication();
+        CanvasApplication canvasApplication = new CanvasApplication(null, false);
         canvasApplication.run(System.in);
     }
 
     public void run(InputStream inputStream) {
         Scanner in = new Scanner(inputStream);
-        Canvas canvas = null;
         CommandFactory commandFactory = new CommandFactory();
 
         System.out.print("Enter command [C, L, R, B, Q]: ");
@@ -29,8 +36,13 @@ public class CanvasApplication {
                                .split("\\s+");
 
             try {
-                Command command = commandFactory.createCommand(input);
-                canvas = command.execute(canvas);
+                Command command = commandFactory.createCommand(input, this);
+                canvas = command.execute();
+
+                if (exit) {
+                    return;
+                }
+
                 System.out.println(canvas.toString());
             } catch (CanvasApplicationException cae) {
                 System.out.println(cae.getMessage());
@@ -40,5 +52,15 @@ public class CanvasApplication {
 
             System.out.print("Enter command [C, L, R, B, Q]: ");
         }
+    }
+
+    @Override
+    public Canvas getCanvas() {
+        return canvas;
+    }
+
+    @Override
+    public void exit() {
+        exit = true;
     }
 }

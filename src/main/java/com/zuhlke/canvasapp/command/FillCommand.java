@@ -5,19 +5,28 @@ import com.zuhlke.canvasapp.drawable.Color;
 import com.zuhlke.canvasapp.drawable.Point;
 import com.zuhlke.canvasapp.util.Validator;
 
-public class FillCommand implements Command {
+public class FillCommand extends AbstractCommand {
 
-    private final Point point;
-    private final Color color;
+    private Point point;
+    private Color color;
 
-    public FillCommand(int x, int y, char color) {
-        this.point = new Point(x - 1, y - 1);
-        this.color = new Color(color);
+    @Override
+    public Canvas execute() {
+        Canvas canvas = context.getCanvas();
+
+        Validator.validateCanvas(canvas);
+        return canvas.fill(point, color);
     }
 
     @Override
-    public Canvas execute(Canvas canvas) {
-        Validator.validateCanvas(canvas);
-        return canvas.fill(point, color);
+    public void setParameters(String... params) {
+        Validator.validateCommandParameters(params, 3);
+
+        int x = Validator.parseInt(params[0]);
+        int y = Validator.parseInt(params[1]);
+        char c = Validator.parseChar(params[2]);
+
+        this.point = new Point(x - 1, y - 1);
+        this.color = new Color(c);
     }
 }

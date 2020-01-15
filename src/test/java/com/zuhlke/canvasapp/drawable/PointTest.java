@@ -95,7 +95,7 @@ public class PointTest {
         Point p1 = new Point(1, 1);
         Point p2 = new Point(1, 1);
 
-        boolean largerThan = p1.isEqualTo(p2);
+        boolean largerThan = p1.equals(p2);
 
         assertThat(largerThan, is(true));
     }
@@ -105,7 +105,7 @@ public class PointTest {
         Point p1 = new Point(1, 1);
         Point p2 = new Point(1, 2);
 
-        boolean largerThan = p1.isEqualTo(p2);
+        boolean largerThan = p1.equals(p2);
 
         assertThat(largerThan, is(false));
     }
@@ -116,7 +116,7 @@ public class PointTest {
         Point p1 = new Point(1, 1);
         Point p2 = new Point(1, 5);
 
-        boolean largerThan = p1.onSameXAxisWith(p2);
+        boolean largerThan = p1.isOnSameXAxisWith(p2);
 
         assertThat(largerThan, is(true));
     }
@@ -126,7 +126,7 @@ public class PointTest {
         Point p1 = new Point(1, 1);
         Point p2 = new Point(5, 1);
 
-        boolean largerThan = p1.onSameXAxisWith(p2);
+        boolean largerThan = p1.isOnSameXAxisWith(p2);
 
         assertThat(largerThan, is(false));
     }
@@ -136,7 +136,7 @@ public class PointTest {
         Point p1 = new Point(2, 5);
         Point p2 = new Point(3, 5);
 
-        boolean largerThan = p1.onSameYAxisWith(p2);
+        boolean largerThan = p1.isOnSameYAxisWith(p2);
 
         assertThat(largerThan, is(true));
     }
@@ -146,7 +146,7 @@ public class PointTest {
         Point p1 = new Point(5, 2);
         Point p2 = new Point(5, 3);
 
-        boolean largerThan = p1.onSameYAxisWith(p2);
+        boolean largerThan = p1.isOnSameYAxisWith(p2);
 
         assertThat(largerThan, is(false));
     }

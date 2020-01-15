@@ -18,11 +18,11 @@ public class Line implements Shape {
     }
 
     public Line(Point start, Point end) {
-        if (start.isEqualTo(end)) {
+        if (start.equals(end)) {
             throw new InvalidCoordinates("Coordinates must form a straight line");
         }
 
-        if (!start.onSameXAxisWith(end) && !start.onSameYAxisWith(end)) {
+        if (!start.isOnSameXAxisWith(end) && !start.isOnSameYAxisWith(end)) {
             throw new InvalidCoordinates("Coordinates must form a straight line");
         }
 
