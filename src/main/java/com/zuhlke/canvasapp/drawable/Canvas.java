@@ -37,17 +37,10 @@ public class Canvas {
         this.height = canvas.height;
     }
 
-    public static <T, U> Map<T, U> deepCopy(Map<T, U> original) {
-        return original.entrySet()
-                       .stream()
-                       .collect(Collectors.toMap(Map.Entry::getKey,
-                                                 Map.Entry::getValue));
-    }
-
     public Canvas draw(Shape shape, Color color) {
         Iterable<Point> endPoints = shape.getEndPoints();
 
-        endPoints.forEach(point -> checkCanvasBoundary(this, point));
+        endPoints.forEach(this::checkCanvasBoundary);
 
         Canvas newCanvas = new Canvas(this);
 
@@ -58,7 +51,7 @@ public class Canvas {
     }
 
     public Canvas fill(Point point, Color color) {
-        checkCanvasBoundary(this, point);
+        checkCanvasBoundary(point);
 
         Color target = canvasData.get(point);
 
@@ -67,63 +60,64 @@ public class Canvas {
         }
 
         Canvas newCanvas = new Canvas(this);
-
-        return doFloodFill(newCanvas, point, target, color);
+        newCanvas.doFloodFill(point, target, color);
+        return newCanvas;
     }
 
-    private static Canvas doFloodFill(Canvas canvas, Point point, Color target, Color color) {
+    private void doFloodFill(Point point, Color target, Color color) {
         Queue<Point> queue = new LinkedList<>();
 
-        Color curr = canvas.canvasData.get(point);
+        Color curr = canvasData.get(point);
 
         if (curr.equals(target)) {
-            canvas.canvasData.put(point, color);
+            canvasData.put(point, color);
         } else {
-            return canvas;
+            return;
         }
 
         queue.add(point);
 
         while (!queue.isEmpty()) {
-
             Point currentPoint = queue.remove();
 
-            checkNeighbour(canvas, queue, currentPoint.left(), target, color);
-            checkNeighbour(canvas, queue, currentPoint.right(), target, color);
-            checkNeighbour(canvas, queue, currentPoint.down(), target, color);
-            checkNeighbour(canvas, queue, currentPoint.up(), target, color);
+            exploreNeighbour(queue, currentPoint.left(), target, color);
+            exploreNeighbour(queue, currentPoint.right(), target, color);
+            exploreNeighbour(queue, currentPoint.down(), target, color);
+            exploreNeighbour(queue, currentPoint.up(), target, color);
         }
-
-        return canvas;
     }
 
-    private static Canvas checkNeighbour(Canvas canvas, Queue<Point> queue, Point point, Color target,
-                                         Color color) {
-        if (!isPointWithinCanvas(canvas, point)) {
-            return canvas;
+    private void exploreNeighbour(Queue<Point> queue, Point point, Color target, Color color) {
+        if (isOutOfCanvasBoundary(point)) {
+            return;
         }
 
-        Color curr = canvas.canvasData.get(point);
+        Color currentColor = canvasData.get(point);
 
-        if (curr.equals(target)) {
-            canvas.canvasData.put(point, color);
+        if (currentColor.equals(target)) {
+            canvasData.put(point, color);
             queue.add(point);
         }
-
-        return canvas;
     }
 
-    private static void checkCanvasBoundary(Canvas canvas, Point point) {
-        if (!isPointWithinCanvas(canvas, point)) {
+    private void checkCanvasBoundary(Point point) {
+        if (isOutOfCanvasBoundary(point)) {
             throw new InvalidCoordinates("Coordinates must be within canvas dimension");
         }
     }
 
-    private static boolean isPointWithinCanvas(Canvas canvas, Point point) {
+    private boolean isOutOfCanvasBoundary(Point point) {
         Point smallest = new Point(0, 0);
-        Point largest = new Point(canvas.width - 1, canvas.height - 1);
+        Point largest = new Point(width - 1, height - 1);
 
-        return point.isBetweenInclusive(smallest, largest);
+        return !point.isBetweenInclusive(smallest, largest);
+    }
+
+    private Map<Point, Color> deepCopy(Map<Point, Color> original) {
+        return original.entrySet()
+                       .stream()
+                       .collect(Collectors.toMap(Map.Entry::getKey,
+                                                 Map.Entry::getValue));
     }
 
     @Override

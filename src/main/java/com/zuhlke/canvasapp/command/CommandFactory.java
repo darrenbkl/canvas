@@ -22,6 +22,17 @@ public class CommandFactory {
     }
 
     public Command createCommand(String[] input, DrawingContext context) {
+        String commandKey = getCommandKey(input);
+        String[] parameters = getParameters(input);
+
+        AbstractCommand command = lookupCommandClassByKey(commandKey);
+        command.setContext(context);
+        command.setParameters(parameters);
+
+        return command;
+    }
+
+    private String getCommandKey(String[] input) {
         String commandKey;
 
         if (input != null && input.length > 0) {
@@ -30,18 +41,16 @@ public class CommandFactory {
         } else {
             throw new InvalidInputFormat("Missing command");
         }
+        return commandKey;
+    }
 
+    private String[] getParameters(String[] input) {
         String[] parameters = {};
 
         if (input.length > 1) {
             parameters = Arrays.copyOfRange(input, 1, input.length);
         }
-
-        AbstractCommand command = lookupCommandClassByKey(commandKey);
-        command.setContext(context);
-        command.setParameters(parameters);
-
-        return command;
+        return parameters;
     }
 
 
